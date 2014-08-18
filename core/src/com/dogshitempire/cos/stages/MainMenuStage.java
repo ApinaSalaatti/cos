@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.dogshitempire.cos.GameApplication;
+import com.dogshitempire.cos.events.GameEvent;
 
 /**
  *
@@ -20,21 +22,19 @@ public class MainMenuStage extends GameStage {
     public MainMenuStage() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         
-        final TextButton button = new TextButton("Click me", skin, "default");
+        final TextButton button = new TextButton("Start the game, meow!", skin, "default");
         
-        button.setWidth(200f);
-        button.setHeight(20f);
-        button.setPosition(Gdx.graphics.getWidth() /2 - 100f, Gdx.graphics.getHeight()/2 - 10f);
+        button.setWidth(300f);
+        button.setHeight(50f);
+        button.setPosition(Gdx.graphics.getWidth() /2 - 150f, Gdx.graphics.getHeight()/2 - 25f);
         
         button.addListener(new ClickListener(){
             @Override 
             public void clicked(InputEvent event, float x, float y){
-                button.setText("You clicked the button");
+                GameApplication.getEventManager().queueEvent(new GameEvent(GameEvent.changeStageEvent, new HomeStage()));
             }
         });
         
         addActor(button);
-        
-        Gdx.input.setInputProcessor(this);
     }
 }
