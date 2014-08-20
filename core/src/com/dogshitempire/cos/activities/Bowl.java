@@ -6,6 +6,7 @@ package com.dogshitempire.cos.activities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.cats.Cat;
 import com.dogshitempire.cos.cats.CatStats;
 
@@ -37,9 +38,9 @@ public class Bowl extends Activity {
         addPossibleAction(foodFill);
         addPossibleAction(waterFill);
         
-        emptyTex = new Texture(Gdx.files.internal("bowl.png"));
-        foodTex = new Texture(Gdx.files.internal("bowl_food.png"));
-        waterTex = new Texture(Gdx.files.internal("bowl_water.png"));
+        emptyTex = GameApplication.getAssetManager().get("bowl.png", Texture.class);
+        foodTex = GameApplication.getAssetManager().get("bowl_food.png", Texture.class);
+        waterTex = GameApplication.getAssetManager().get("bowl_water.png", Texture.class);
         
         tex = emptyTex;
     }

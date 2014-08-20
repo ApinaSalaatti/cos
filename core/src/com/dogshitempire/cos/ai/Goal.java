@@ -4,17 +4,17 @@
  */
 package com.dogshitempire.cos.ai;
 
-import com.badlogic.gdx.Gdx;
 import com.dogshitempire.cos.cats.Cat;
+import com.dogshitempire.cos.cats.CatBrain;
 
 /**
  *
  * @author Super-Aapo
  */
 public abstract class Goal {
-    private Cat cat;
-    public Cat getCat() {
-        return cat;
+    private CatBrain brain;
+    public CatBrain getBrain() {
+        return brain;
     }
     
     private boolean aborted;
@@ -24,10 +24,10 @@ public abstract class Goal {
     
     /**
      * 
-     * @param cat the cat that has this goal
+     * @param brain the CatBrain that has this goal
      */
-    public Goal(Cat cat) {
-        this.cat = cat;
+    public Goal(CatBrain brain) {
+        this.brain = brain;
         
         aborted = false;
         done = false;

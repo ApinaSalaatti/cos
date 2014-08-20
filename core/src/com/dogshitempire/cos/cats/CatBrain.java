@@ -24,7 +24,7 @@ public class CatBrain {
         thinkTimer = 0f;
         thinkInterval = 5f;
         
-        currentGoal = new WanderGoal(cat);
+        currentGoal = new WanderGoal(this);
     }
     
     public void act(float deltaSeconds) {
@@ -50,10 +50,14 @@ public class CatBrain {
             if(currentGoal != null) {
                 currentGoal.abort();
             }
-            currentGoal = new GetFoodGoal(cat);
+            currentGoal = new GetFoodGoal(this);
         }
         else if(currentGoal == null) {
-            currentGoal = new WanderGoal(cat);
+            currentGoal = new WanderGoal(this);
         }
+    }
+    
+    public Cat getCat() {
+        return cat;
     }
 }

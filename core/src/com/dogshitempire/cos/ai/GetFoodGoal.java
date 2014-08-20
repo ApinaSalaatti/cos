@@ -4,7 +4,8 @@
  */
 package com.dogshitempire.cos.ai;
 
-import com.dogshitempire.cos.cats.Cat;
+import com.dogshitempire.cos.cats.CatBrain;
+import com.dogshitempire.cos.cats.CatStats;
 
 /**
  *
@@ -12,14 +13,15 @@ import com.dogshitempire.cos.cats.Cat;
  */
 public class GetFoodGoal extends Goal {
     
-    public GetFoodGoal(Cat cat) {
-        super(cat);
+    public GetFoodGoal(CatBrain brain) {
+        super(brain);
         
         FindFoodTask fft = new FindFoodTask(this);
         GoToPositionTask gtpt = new GoToPositionTask(this);
-        EatFoodTask eft = new EatFoodTask(this);
+        //EatFoodTask eft = new EatFoodTask(this);
+        CompleteActivityTask ct = new CompleteActivityTask(this, 2f, CatStats.NEED_HUNGER);
         fft.setNextTask(gtpt);
-        gtpt.setNextTask(eft);
+        gtpt.setNextTask(ct);
         
         this.setTask(fft);
     }

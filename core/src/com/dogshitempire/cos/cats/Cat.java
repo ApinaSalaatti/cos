@@ -4,13 +4,13 @@
  */
 package com.dogshitempire.cos.cats;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.dogshitempire.cos.GameApplication;
 
 /**
  *
@@ -39,7 +39,7 @@ public class Cat extends Actor {
     public Cat(int id) {
         catID = id;
         
-        tex = new Texture(Gdx.files.internal("cat.png"));
+        tex = GameApplication.getAssetManager().get("cat.png", Texture.class);
         Pixmap pm = new Pixmap(tex.getWidth(), tex.getHeight(), Format.RGBA8888);
         pm.setColor(Color.GREEN);
         pm.drawLine(0, 0, pm.getWidth()-1, 0);

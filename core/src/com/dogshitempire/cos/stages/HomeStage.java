@@ -5,6 +5,7 @@
 package com.dogshitempire.cos.stages;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -12,11 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.activities.Activity;
-import com.dogshitempire.cos.activities.Bowl;
+import com.dogshitempire.cos.activities.ActivityGrid;
 import com.dogshitempire.cos.cats.Cat;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.factories.CatFactory;
+import com.dogshitempire.cos.lady.Lady;
 import com.dogshitempire.cos.ui.ActionSelection;
+import com.dogshitempire.cos.ui.BuyScreen;
 import com.dogshitempire.cos.ui.CatSummary;
 import com.dogshitempire.cos.ui.MessageWindow;
 
@@ -27,10 +30,16 @@ import com.dogshitempire.cos.ui.MessageWindow;
 public class HomeStage extends GameStage {
     private Skin skin;
     
+    private Lady lady;
+    
     private CatFactory catFactory;
     private Array<Cat> cats;
     
     private Array<Activity> activities;
+    private ActivityGrid activityGrid;
+    public ActivityGrid getActivityGrid() {
+        return activityGrid;
+    }
     
     private Vector2 stageCoords = new Vector2();
     private Cat hoveredCat;
@@ -43,6 +52,7 @@ public class HomeStage extends GameStage {
         catFactory = new CatFactory();
         cats = new Array<Cat>();
         activities = new Array<Activity>();
+        activityGrid = new ActivityGrid();
         
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         
@@ -50,10 +60,10 @@ public class HomeStage extends GameStage {
         catSummary.setPosition(150, 150);
         addActor(catSummary);
         
-        Bowl bowl = new Bowl();
-        bowl.setX(500);
-        bowl.setY(500);
-        addActivity(bowl);
+        lady = new Lady();
+        lady.setX(350);
+        lady.setY(6);
+        addActor(lady);
         
         infoLabel = new Label("", skin, "blackText");
     }
@@ -89,6 +99,25 @@ public class HomeStage extends GameStage {
             addCat();
             catSpawnTimer = 0f;
         }
+    }
+    
+    @Override
+    public void draw() {
+        super.draw();
+    }
+    
+    @Override
+    public boolean keyDown(int keyCode) {
+        if(super.keyDown(keyCode)) {
+            return true;
+        }
+        
+        if(keyCode == Keys.B) {
+            addActor(new BuyScreen());
+            return true;
+        }
+        
+        return false;
     }
     
     @Override
@@ -137,7 +166,6 @@ public class HomeStage extends GameStage {
             return true;
         }
         
-        
         if(button == 1 && selectedCat != null) {
             selectedCat.toggleSelected(false);
             selectedCat = null;
@@ -166,7 +194,7 @@ public class HomeStage extends GameStage {
         else if(target instanceof Activity) {
             Activity a = (Activity)target;
             ActionSelection as = new ActionSelection(a);
-            as.setX(x);
+            as.setX(x+110);
             as.setY(y);
             addActor(as);
         }

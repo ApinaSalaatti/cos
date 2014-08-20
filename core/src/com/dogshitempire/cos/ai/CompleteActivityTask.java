@@ -6,24 +6,33 @@ package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.dogshitempire.cos.activities.Activity;
-import com.dogshitempire.cos.cats.CatStats;
 
 /**
  *
  * @author Super-Aapo
  */
-public class EatFoodTask extends Task {
+public class CompleteActivityTask extends Task {
     private Activity activity;
+    private int needToSatisfy;
     
-    private float eatTimer = 0f;
-    private float eatInterval = 2f;
+    private float activityTimer = 0f;
+    private float activityInterval = 2f;
     
-    public EatFoodTask(Goal goal) {
-        super(goal);
+    public CompleteActivityTask(Goal goal, float speed) {
+        this(goal, speed, -1);
     }
     
-    public void setActivity(Activity a) {
-        activity = a;
+    /**
+     * 
+     * @param goal
+     * @param speed how many seconds should pass between each time progress is added on the activity
+     * @param need the need we want to satisfy. If -1 this Task accepts any activity
+     */
+    public CompleteActivityTask(Goal goal, float speed, int need) {
+        super(goal);
+        
+        activityInterval = speed;
+        needToSatisfy = need;
     }
     
     @Override
@@ -40,7 +49,7 @@ public class EatFoodTask extends Task {
     
     @Override
     public void onBegin() {
-        if(activity.satisfiesNeed(CatStats.NEED_HUNGER)) {
+        if(activity.satisfiesNeed(needToSatisfy)) {
             if(!activity.reserveSlot(goal.getBrain().getCat())) {
                 abort();
             }
@@ -52,9 +61,9 @@ public class EatFoodTask extends Task {
     
     @Override
     public void update(float deltaSeconds) {
-        eatTimer += deltaSeconds;
-        if(eatTimer >= eatInterval) {
-            eatTimer = 0;
+        activityTimer += deltaSeconds;
+        if(activityTimer >= activityInterval) {
+            activityTimer = 0;
             if(activity.addProgress(goal.getBrain().getCat())) {
                 getDone();
             }

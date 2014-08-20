@@ -6,6 +6,7 @@ package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.dogshitempire.cos.cats.Cat;
 
 /**
  *
@@ -44,10 +45,12 @@ public class GoToPositionTask extends Task {
     
     @Override
     public void update(float deltaSeconds) {
-        //Gdx.app.log("GTPT", "UPDATING");
-        if(position.dst(goal.getCat().getX(), goal.getCat().getY()) <= 2) {
+        Cat cat = goal.getBrain().getCat();
+        
+        if(position.dst(cat.getX(), cat.getY()) <= 2) {
             getDone();
         }
-        goal.getCat().getMover().setTarget(position.x, position.y);
+        
+        cat.getMover().setTarget(position.x, position.y);
     }
 }

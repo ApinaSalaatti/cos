@@ -20,7 +20,7 @@ public class CatFactory {
     
     public CatFactory() {
         catNames = new Array<String>();
-        catNames.addAll("Mr. Whiskers", "Blob", "Stripes", "Molly", "Gennaro");
+        catNames.addAll("Mr. Whiskers", "Blob", "Stripes", "Elizabeth", "Molly", "Gennaro", "Robert", "Spanker", "Flute");
     }
     
     public Cat createCat() {

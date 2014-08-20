@@ -33,7 +33,7 @@ public class FindFoodTask extends Task {
     
     @Override
     public void update(float deltaSeconds) {
-        HomeStage hs = (HomeStage)goal.getCat().getStage();
+        HomeStage hs = (HomeStage)goal.getBrain().getCat().getStage();
         Array<Activity> activities = hs.getActivities();
         
         for(int i = 0; i < activities.size; i++) {
