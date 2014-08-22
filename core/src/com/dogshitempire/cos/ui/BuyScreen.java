@@ -6,6 +6,8 @@ package com.dogshitempire.cos.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
@@ -23,6 +25,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Pools;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.activities.Activity;
+import com.dogshitempire.cos.activities.ActivityGrid;
+import com.dogshitempire.cos.activities.ActivityTile;
 import com.dogshitempire.cos.activities.Bowl;
 import com.dogshitempire.cos.stages.HomeStage;
 
@@ -32,6 +36,7 @@ import com.dogshitempire.cos.stages.HomeStage;
  */
 public class BuyScreen extends Table {
     private Skin skin;
+    private Texture tileTex;
     
     private Activity objectBeingBought;
     
@@ -55,6 +60,14 @@ public class BuyScreen extends Table {
         add(button);
         
         this.setFillParent(true);
+        
+        Pixmap pm = new Pixmap(ActivityGrid.TILE_WIDTH, ActivityGrid.TILE_HEIGHT, Pixmap.Format.RGBA8888);
+        pm.setColor(Color.WHITE);
+        pm.drawLine(0, 0, pm.getWidth()-1, 0);
+        pm.drawLine(0, 0, 0, pm.getHeight()-1);
+        pm.drawLine(pm.getWidth()-1, 0, pm.getWidth()-1, pm.getHeight()-1);
+        pm.drawLine(0, pm.getHeight()-1, pm.getWidth()-1, pm.getWidth()-1);
+        tileTex = new Texture(pm);
     }
     
     @Override
@@ -80,6 +93,9 @@ public class BuyScreen extends Table {
             
             objectBeingBought.setX(vec.x);
             objectBeingBought.setY(vec.y);
+            objectBeingBought.act(deltaSeconds);
+            
+            Pools.free(vec);
         }
     }
     
@@ -126,7 +142,8 @@ public class BuyScreen extends Table {
     
     private void handleTouch(InputEvent event) {
         if(event.getButton() == 0) {
-            if(objectBeingBought != null) {
+            if(objectBeingBought != null && homeStage.getActivityGrid().canPlace(objectBeingBought)) {
+                homeStage.getActivityGrid().place(objectBeingBought);
                 homeStage.addActor(objectBeingBought);
                 homeStage.addActivity(objectBeingBought);
                 objectBeingBought = null;
@@ -140,12 +157,50 @@ public class BuyScreen extends Table {
     
     @Override
     public void draw(Batch batch, float alpha) {
-        homeStage.getActivityGrid().draw(batch);
+        drawGrid(batch);
         if(objectBeingBought != null) {
             objectBeingBought.draw(batch, alpha);
         }
         
         super.draw(batch, alpha);
+    }
+    
+    public void drawGrid(Batch batch) {
+        ActivityTile[][] tiles = homeStage.getActivityGrid().getTiles();
+        int[][] occupied = new int[0][0];
+        if(objectBeingBought != null) {
+            occupied = homeStage.getActivityGrid().getOccopiedTiles(objectBeingBought);
+            //Gdx.app.log("BUYSCREEN", "OCCUPIED: " + occupied[0][0] + "," + occupied[0][1]);
+            // Reserving tiles is for drawing purposes only
+            for(int i = 0; i < occupied.length; i++) {
+                tiles[occupied[i][1]][occupied[i][0]].reserve();
+            }
+        }
+        
+        Color oldCol = batch.getColor();
+        for(int y = 0; y < tiles.length; y++) {
+            for(int x = 0; x < tiles[0].length; x++) {
+                if(tiles[y][x].isReserved()) {
+                    if(tiles[y][x].isTaken()) {
+                        batch.setColor(Color.RED);
+                    }
+                    else {
+                        batch.setColor(Color.GREEN);
+                    }
+                }
+                else {
+                    batch.setColor(Color.WHITE);
+                }
+                
+                batch.draw(tileTex, x*ActivityGrid.TILE_WIDTH, y*ActivityGrid.TILE_HEIGHT);
+            }
+        }
+        batch.setColor(oldCol);
+        
+        // Release the reserved tiles
+        for(int i = 0; i < occupied.length; i++) {
+            tiles[occupied[i][1]][occupied[i][0]].unreserve();
+        }
     }
     
     public void closeScreen() {

@@ -35,7 +35,7 @@ public abstract class Activity extends Actor {
     @Override
     public void act(float deltaSeconds) {
         super.act(deltaSeconds);
-        
+
         setBounds(getX(), getY(), tex.getWidth(), tex.getHeight());
     }
     

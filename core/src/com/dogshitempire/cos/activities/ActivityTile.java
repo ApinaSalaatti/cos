@@ -12,6 +12,7 @@ public class ActivityTile {
     public enum TileSide { TOP, BOTTOM, LEFT, RIGHT };
     
     private boolean taken;
+    private boolean reserved;
     private boolean solidTop;
     private boolean solidBottom;
     private boolean solidLeft;
@@ -25,6 +26,16 @@ public class ActivityTile {
     }
     public void release() {
         taken = false;
+    }
+    
+    public boolean isReserved() {
+        return reserved;
+    }
+    public void reserve() {
+        reserved = true;
+    }
+    public void unreserve() {
+        reserved = false;
     }
     
     public void setSolid(TileSide side, boolean solid) {
