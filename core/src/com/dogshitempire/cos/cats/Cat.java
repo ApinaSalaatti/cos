@@ -4,13 +4,16 @@
  */
 package com.dogshitempire.cos.cats;
 
+import com.dogshitempire.cos.cats.buffs.CatBuff;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.GameApplication;
+import java.util.Iterator;
 
 /**
  *
@@ -36,6 +39,8 @@ public class Cat extends Actor {
     private CatMover mover;
     private CatBrain brain;
     
+    private Array<CatBuff> buffs;
+    
     public Cat(int id) {
         catID = id;
         
@@ -51,6 +56,8 @@ public class Cat extends Actor {
         stats = new CatStats();
         mover = new CatMover(this);
         brain = new CatBrain(this);
+        
+        buffs = new Array<CatBuff>();
     }
     
     @Override
@@ -61,7 +68,26 @@ public class Cat extends Actor {
         mover.act(deltaSeconds);
         brain.act(deltaSeconds);
         
+        updateBuffs(deltaSeconds);
+        
         setBounds(getX(), getY(), tex.getWidth(), tex.getHeight());
+    }
+    
+    private void updateBuffs(float deltaSeconds) {
+        Iterator<CatBuff> it = buffs.iterator();
+        while(it.hasNext()) {
+            CatBuff buff = it.next();
+            buff.update(deltaSeconds);
+            if(buff.done()) {
+                buff.onRemove();
+                it.remove();
+            }
+        }
+    }
+    
+    public void addBuff(CatBuff buff) {
+        buffs.add(buff);
+        buff.onAdd(this);
     }
     
     @Override

@@ -28,6 +28,7 @@ import com.dogshitempire.cos.activities.Activity;
 import com.dogshitempire.cos.activities.ActivityGrid;
 import com.dogshitempire.cos.activities.ActivityTile;
 import com.dogshitempire.cos.activities.Bowl;
+import com.dogshitempire.cos.activities.Toy;
 import com.dogshitempire.cos.stages.HomeStage;
 
 /**
@@ -55,9 +56,18 @@ public class BuyScreen extends Table {
                 objectBeingBought = new Bowl();
             }
         });
-        
         button.add(new Image(GameApplication.getAssetManager().get("bowl.png", Texture.class)));
         add(button);
+        
+        Button button2 = new Button(skin);
+        button2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor target) {
+                objectBeingBought = new Toy();
+            }
+        });
+        button2.add(new Image(GameApplication.getAssetManager().get("toy.png", Texture.class)));
+        add(button2);
         
         this.setFillParent(true);
         
@@ -93,6 +103,9 @@ public class BuyScreen extends Table {
             
             objectBeingBought.setX(vec.x);
             objectBeingBought.setY(vec.y);
+            
+            homeStage.getActivityGrid().snapToTile(objectBeingBought, ActivityTile.TileSide.TOP);
+            
             objectBeingBought.act(deltaSeconds);
             
             Pools.free(vec);

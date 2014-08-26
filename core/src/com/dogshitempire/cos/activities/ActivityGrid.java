@@ -52,7 +52,6 @@ public class ActivityGrid {
         
         for(int y = minY; y <= maxY; y++) {
             for(int x = minX; x <= maxX; x++) {
-                Gdx.app.log("AG", x + ", " + y);
                 arr[i][0] = x;
                 arr[i][1] = y;
                 i++;
@@ -116,5 +115,28 @@ public class ActivityGrid {
     
     public ActivityTile[][] getTiles() {
         return tiles;
+    }
+    
+    public void snapToTile(Activity activity, ActivityTile.TileSide side) {
+        Vector2 pos = null;
+        
+        switch(side) {
+            case TOP:
+                pos = getGridPosition(activity.getX(), activity.getTop());
+                activity.setPosition(activity.getX(), TILE_HEIGHT*pos.y);
+                break;
+            case BOTTOM:
+                pos = getGridPosition(activity.getX(), activity.getY());
+                activity.setPosition(activity.getX(), TILE_HEIGHT*pos.y);
+                break;
+            case LEFT:
+                pos = getGridPosition(activity.getX(), activity.getY());
+                activity.setPosition(TILE_WIDTH*pos.x, activity.getY());
+                break;
+            case RIGHT:
+                pos = getGridPosition(activity.getRight(), activity.getY());
+                activity.setPosition(TILE_WIDTH*pos.x, activity.getY());
+                break;
+        }
     }
 }

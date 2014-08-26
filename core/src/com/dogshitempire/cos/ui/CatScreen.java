@@ -118,10 +118,10 @@ public class CatScreen extends Table {
     @Override
     public void draw(Batch batch, float alpha) {
         catName.setText(cat.getCatName() + " (" + cat.getGenderLetter() + ")");
-        catHealth.setText("" + cat.getStats().getHealth());
-        catHappiness.setText("" + cat.getStats().getHappiness());
-        catCleanliness.setText("" + cat.getStats().getCleanliness());
-        catHunger.setText("" + cat.getStats().getHunger());
+        catHealth.setText("" + (int)cat.getStats().getHealth());
+        catHappiness.setText("" + (int)cat.getStats().getHappiness());
+        catCleanliness.setText("" + (int)cat.getStats().getCleanliness());
+        catHunger.setText("" + (int)cat.getStats().getHunger());
         
         super.draw(batch, alpha);
     }

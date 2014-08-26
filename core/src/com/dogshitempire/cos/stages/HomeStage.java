@@ -193,10 +193,12 @@ public class HomeStage extends GameStage {
         }
         else if(target instanceof Activity) {
             Activity a = (Activity)target;
-            ActionSelection as = new ActionSelection(a);
-            as.setX(x+110);
-            as.setY(y);
-            addActor(as);
+            if(a.getPossibleActions().size > 0) {
+                ActionSelection as = new ActionSelection(a);
+                as.setX(x+110);
+                as.setY(y);
+                addActor(as);
+            }
         }
         
         return false;

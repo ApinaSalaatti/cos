@@ -4,11 +4,12 @@
  */
 package com.dogshitempire.cos.activities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.cats.Cat;
+import com.dogshitempire.cos.cats.buffs.CatBuff.BuffType;
 import com.dogshitempire.cos.cats.CatStats;
+import com.dogshitempire.cos.cats.buffs.NeedBuff;
 
 /**
  *
@@ -20,9 +21,9 @@ public class Bowl extends Activity {
     private int amountOfContent;
     private int reservedContent;
     
-    private String foodFill = "Fill with food";
-    private String waterFill = "Fill with water";
-    private String emptyContents = "Empty contents";
+    private final String foodFill = "Fill with food";
+    private final String waterFill = "Fill with water";
+    private final String emptyContents = "Empty contents";
     
     private Texture emptyTex;
     private Texture foodTex;
@@ -62,7 +63,6 @@ public class Bowl extends Activity {
     
     @Override
     public void progressDone(Cat cat) {
-        //Gdx.app.log("BOWL", "DONE");
         amountOfContent--;
         reservedContent--;
         
@@ -72,6 +72,7 @@ public class Bowl extends Activity {
         
         if(currentContent == Content.FOOD) {
             cat.getStats().setHunger(100f);
+            cat.addBuff(new NeedBuff(BuffType.OVER_TIME, 10f, CatStats.NEED_HUNGER, 1f));
         }
         else {
             cat.getStats().setHealth(cat.getStats().getHealth() + 10);

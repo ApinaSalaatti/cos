@@ -11,6 +11,7 @@ package com.dogshitempire.cos.cats;
 public class Skill {
     private String name;
     private int level;
+    private int bonus;
     private int experience;
     
     public Skill(String name) {
@@ -23,8 +24,15 @@ public class Skill {
         return name;
     }
     
+    public void setBonus(int b) {
+        bonus = b;
+    }
+    public boolean isBuffed() {
+        return bonus != 0;
+    }
+    
     public int getLevel() {
-        return level;
+        return level + bonus;
     }
     
     public int getExperience() {

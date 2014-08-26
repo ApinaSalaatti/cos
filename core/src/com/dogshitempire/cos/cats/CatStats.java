@@ -38,45 +38,57 @@ public class CatStats {
     }
     
     public float getHealth() {
-        return (int)health;
+        return health;
     }
 
     public void setHealth(float health) {
         if(health > 100) {
             health = 100;
         }
+        if(health < 0) {
+            health = 0;
+        }
         this.health = health;
     }
 
     public float getHappiness() {
-        return (int)happiness;
+        return happiness;
     }
 
     public void setHappiness(float happiness) {
         if(happiness > 100) {
             happiness = 100;
         }
+        if(happiness < 0) {
+            happiness = 0;
+        }
         this.happiness = happiness;
     }
 
     public float getCleanliness() {
-        return (int)cleanliness;
+        return cleanliness;
     }
 
     public void setCleanliness(float cleanliness) {
         if(cleanliness > 100) {
             cleanliness = 100;
         }
+        if(cleanliness < 0) {
+            cleanliness = 0;
+        }
         this.cleanliness = cleanliness;
     }
 
     public float getHunger() {
-        return (int)hunger;
+        return hunger;
     }
 
     public void setHunger(float hunger) {
         if(hunger > 100) {
             hunger = 100;
+        }
+        if(hunger < 0) {
+            hunger = 0;
         }
         this.hunger = hunger;
     }
@@ -128,7 +140,19 @@ public class CatStats {
         
         skills.add(skill);
     }
+    public Skill getSkill(String skill) {
+        for(int i = 0; i < skills.size; i++) {
+            if(skills.get(i).getName().equals(skill)) {
+                return skills.get(i);
+            }
+        }
+        return null;
+    }
     public boolean removeSkill(Skill skill) {
         return skills.removeValue(skill, true);
+    }
+    public boolean removeSkill(String skill) {
+        Skill s = getSkill(skill);
+        return removeSkill(s);
     }
 }

@@ -1,29 +1,27 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.activities.Activity;
-import com.dogshitempire.cos.cats.CatStats;
 import com.dogshitempire.cos.stages.HomeStage;
 
 /**
  *
- * @author Super-Aapo
+ * @author Merioksan Mikko
  */
-public class FindFoodTask extends Task {
+public class FindActivityTask extends Task {
     private Activity foundActivity;
+    private int needToSatisfy;
     
-    public FindFoodTask(Goal goal) {
+    public FindActivityTask(Goal goal, int need) {
         super(goal);
+        
+        needToSatisfy = need;
     }
     
     @Override
     public void onDone() {
-        //Gdx.app.log("FFT", "GUESS WERE DONE!! " + getNextTask().toString());
+        //Gdx.app.log("FAT", "GUESS WERE DONE!! " + getNextTask().toString());
         if(getNextTask() instanceof GoToPositionTask) {
             //Gdx.app.log("FFT", "SETTING POS!!");
             GoToPositionTask gtpt = (GoToPositionTask)getNextTask();
@@ -38,8 +36,8 @@ public class FindFoodTask extends Task {
         
         for(int i = 0; i < activities.size; i++) {
             Activity a = activities.get(i);
-            if(a.satisfiesNeed(CatStats.NEED_HUNGER)) {
-                //Gdx.app.log("FFT", "FOOD FOUND!");
+            if(a.satisfiesNeed(needToSatisfy)) {
+                //Gdx.app.log("FAT", "ACTIVITY FOUND!");
                 foundActivity = a;
                 getDone();
                 return;

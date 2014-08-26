@@ -4,8 +4,8 @@
  */
 package com.dogshitempire.cos.cats;
 
-import com.dogshitempire.cos.ai.GetFoodGoal;
 import com.dogshitempire.cos.ai.Goal;
+import com.dogshitempire.cos.ai.SatisfyNeedGoal;
 import com.dogshitempire.cos.ai.WanderGoal;
 
 /**
@@ -22,7 +22,7 @@ public class CatBrain {
     public CatBrain(Cat cat) {
         this.cat = cat;
         thinkTimer = 0f;
-        thinkInterval = 5f;
+        thinkInterval = 1f;
         
         currentGoal = new WanderGoal(this);
     }
@@ -46,11 +46,17 @@ public class CatBrain {
     private void think() {
         CatStats s = cat.getStats();
         
-        if(s.getHunger() < 45f && !(currentGoal instanceof GetFoodGoal)) {
+        if(s.getHunger() < 45f && !(currentGoal instanceof SatisfyNeedGoal)) {
             if(currentGoal != null) {
                 currentGoal.abort();
             }
-            currentGoal = new GetFoodGoal(this);
+            currentGoal = new SatisfyNeedGoal(this, CatStats.NEED_HUNGER);
+        }
+        else if(s.getHappiness() <= 45f && (currentGoal instanceof WanderGoal)) {
+            if(currentGoal != null) {
+                currentGoal.abort();
+            }
+            currentGoal = new SatisfyNeedGoal(this, CatStats.NEED_HAPPINESS);
         }
         else if(currentGoal == null) {
             currentGoal = new WanderGoal(this);

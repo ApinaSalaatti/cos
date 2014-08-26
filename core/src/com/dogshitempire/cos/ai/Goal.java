@@ -46,6 +46,9 @@ public abstract class Goal {
     }
     public void abort() {
         aborted = true;
+        if(currentTask != null) {
+            currentTask.onAbort();
+        }
     }
     public boolean done() {
         return done;
