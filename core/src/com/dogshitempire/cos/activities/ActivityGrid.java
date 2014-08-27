@@ -123,7 +123,7 @@ public class ActivityGrid {
         switch(side) {
             case TOP:
                 pos = getGridPosition(activity.getX(), activity.getTop());
-                activity.setPosition(activity.getX(), TILE_HEIGHT*pos.y);
+                activity.setPosition(activity.getX(), TILE_HEIGHT*(pos.y+1)-(activity.getHeight()+1));
                 break;
             case BOTTOM:
                 pos = getGridPosition(activity.getX(), activity.getY());
@@ -135,7 +135,7 @@ public class ActivityGrid {
                 break;
             case RIGHT:
                 pos = getGridPosition(activity.getRight(), activity.getY());
-                activity.setPosition(TILE_WIDTH*pos.x, activity.getY());
+                activity.setPosition(TILE_WIDTH*(pos.x+1)-(activity.getWidth()+1), activity.getY());
                 break;
         }
     }
