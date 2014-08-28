@@ -17,8 +17,8 @@ public abstract class Goal {
         return brain;
     }
     
-    private boolean aborted;
-    private boolean done;
+    protected boolean aborted;
+    protected boolean done;
     
     private Task currentTask;
     
@@ -57,6 +57,9 @@ public abstract class Goal {
         done = true;
     }
     
+    public void onBegin() {
+        
+    }
     public void onFinish() {
         
     }

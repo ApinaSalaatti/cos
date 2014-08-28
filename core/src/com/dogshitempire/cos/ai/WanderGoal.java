@@ -31,4 +31,5 @@ public class WanderGoal extends Goal {
             cat.getMover().setMode(CatMover.MoveMode.WANDER);
         }
     }
+    
 }

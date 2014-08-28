@@ -2,46 +2,32 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dogshitempire.cos.activities;
+package com.dogshitempire.cos.items.activities;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.dogshitempire.cos.cats.Cat;
+import com.dogshitempire.cos.items.Item;
 
 /**
  *
  * @author Super-Aapo
  */
-public abstract class Activity extends Actor {
+public abstract class Activity extends Item {
     protected Cat[] users;
     protected ObjectMap<Cat, Float> progresses;
     protected float progressSpeed;
     
-    protected Texture tex;
-    
     protected Array<String> possibleActions;
     
-    public Activity(int maxUsers, float progressSpeed) {
+    public Activity(int width, int height, Place place, int maxUsers, float progressSpeed) {
+        super(width, height, place);
         users = new Cat[maxUsers];
         possibleActions = new Array<String>();
         progresses = new ObjectMap<Cat, Float>();
         this.progressSpeed = progressSpeed;
-    }
-    
-    @Override
-    public void act(float deltaSeconds) {
-        super.act(deltaSeconds);
-
-        setBounds(getX(), getY(), tex.getWidth(), tex.getHeight());
-    }
-    
-    @Override
-    public void draw(Batch batch, float alpha) {
-        batch.draw(tex, getX(), getY());
     }
     
     public boolean reserveSlot(Cat cat) {
@@ -104,8 +90,6 @@ public abstract class Activity extends Actor {
                 Float f = progresses.get(cat);
                 f += progressSpeed;
                 
-                //Gdx.app.log("PROGRRR", "" + f);
-                
                 if(f >= 1f) {
                     progressDone(cat);
                     progresses.remove(cat);
@@ -146,7 +130,6 @@ public abstract class Activity extends Actor {
     }
     
     public abstract void progressDone(Cat cat);
-    public abstract boolean satisfiesNeed(int need);
+    public abstract boolean satisfiesNeed(int need, Cat cat);
     public abstract void receiveAction(String action);
-    public abstract String getInfo();
 }

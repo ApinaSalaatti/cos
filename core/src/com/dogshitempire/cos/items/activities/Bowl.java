@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dogshitempire.cos.activities;
+package com.dogshitempire.cos.items.activities;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.dogshitempire.cos.GameApplication;
@@ -30,7 +30,7 @@ public class Bowl extends Activity {
     private Texture waterTex;
     
     public Bowl() {
-        super(2, 0.2f);
+        super(2, 2, Activity.Place.FLOOR, 2, 0.2f);
         
         currentContent = Content.FOOD;
         amountOfContent = 0;
@@ -80,7 +80,7 @@ public class Bowl extends Activity {
     }
     
     @Override
-    public boolean satisfiesNeed(int need) {
+    public boolean satisfiesNeed(int need, Cat cat) {
         if(freeContentLeft() > 0) {
             if(currentContent == Content.FOOD && need == CatStats.NEED_HUNGER) {
                 return true;

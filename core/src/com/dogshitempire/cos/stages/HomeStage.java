@@ -12,11 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.GameApplication;
-import com.dogshitempire.cos.activities.Activity;
-import com.dogshitempire.cos.activities.ActivityGrid;
+import com.dogshitempire.cos.items.activities.Activity;
 import com.dogshitempire.cos.cats.Cat;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.factories.CatFactory;
+import com.dogshitempire.cos.items.ItemGrid;
 import com.dogshitempire.cos.lady.Lady;
 import com.dogshitempire.cos.ui.ActionSelection;
 import com.dogshitempire.cos.ui.BuyScreen;
@@ -36,9 +36,9 @@ public class HomeStage extends GameStage {
     private Array<Cat> cats;
     
     private Array<Activity> activities;
-    private ActivityGrid activityGrid;
-    public ActivityGrid getActivityGrid() {
-        return activityGrid;
+    private ItemGrid itemGrid;
+    public ItemGrid getItemGrid() {
+        return itemGrid;
     }
     
     private Vector2 stageCoords = new Vector2();
@@ -52,7 +52,7 @@ public class HomeStage extends GameStage {
         catFactory = new CatFactory();
         cats = new Array<Cat>();
         activities = new Array<Activity>();
-        activityGrid = new ActivityGrid();
+        itemGrid = new ItemGrid();
         
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         

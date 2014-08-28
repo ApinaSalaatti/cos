@@ -2,7 +2,7 @@ package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-import com.dogshitempire.cos.activities.Activity;
+import com.dogshitempire.cos.items.activities.Activity;
 import com.dogshitempire.cos.stages.HomeStage;
 
 /**
@@ -36,7 +36,7 @@ public class FindActivityTask extends Task {
         
         for(int i = 0; i < activities.size; i++) {
             Activity a = activities.get(i);
-            if(a.satisfiesNeed(needToSatisfy)) {
+            if(a.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) {
                 //Gdx.app.log("FAT", "ACTIVITY FOUND!");
                 foundActivity = a;
                 getDone();

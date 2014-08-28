@@ -2,13 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dogshitempire.cos.activities;
+package com.dogshitempire.cos.items;
 
 /**
  *
  * @author Super-Aapo
  */
-public class ActivityTile {
+public class ItemTile {
     public enum TileSide { TOP, BOTTOM, LEFT, RIGHT };
     
     private boolean taken;
@@ -17,6 +17,10 @@ public class ActivityTile {
     private boolean solidBottom;
     private boolean solidLeft;
     private boolean solidRight;
+    
+    public ItemTile() {
+        solidTop = solidBottom = solidLeft = solidRight = false;
+    }
     
     public boolean isTaken() {
         return taken;
@@ -53,6 +57,9 @@ public class ActivityTile {
                 solidRight = solid;
                 break;
         }
+        
+        // If a side of a tile is solid, it must also be taken.
+        if(solid) take();
     }
     
     public boolean isSolid(TileSide side) {

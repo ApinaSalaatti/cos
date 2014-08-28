@@ -37,6 +37,7 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
         assetManager.load("cat.png", Texture.class);
         assetManager.load("lady.png", Texture.class);
         assetManager.load("toy.png", Texture.class);
+        assetManager.load("chair.png", Texture.class);
         assetManager.load("uiskin.json", Skin.class);
         assetManager.finishLoading();
         

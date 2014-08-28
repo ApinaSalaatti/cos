@@ -24,11 +24,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.Pools;
 import com.dogshitempire.cos.GameApplication;
-import com.dogshitempire.cos.activities.Activity;
-import com.dogshitempire.cos.activities.ActivityGrid;
-import com.dogshitempire.cos.activities.ActivityTile;
-import com.dogshitempire.cos.activities.Bowl;
-import com.dogshitempire.cos.activities.Toy;
+import com.dogshitempire.cos.items.activities.Activity;
+import com.dogshitempire.cos.items.ItemGrid;
+import com.dogshitempire.cos.items.ItemTile;
+import com.dogshitempire.cos.items.activities.Bowl;
+import com.dogshitempire.cos.items.activities.Toy;
+import com.dogshitempire.cos.cats.Interest;
+import com.dogshitempire.cos.items.Item;
+import com.dogshitempire.cos.items.furniture.Chair;
 import com.dogshitempire.cos.stages.HomeStage;
 
 /**
@@ -39,7 +42,7 @@ public class BuyScreen extends Table {
     private Skin skin;
     private Texture tileTex;
     
-    private Activity objectBeingBought;
+    private Item objectBeingBought;
     
     // The stage this screen is part of. We know it must be a HomeStage
     private HomeStage homeStage;
@@ -47,7 +50,7 @@ public class BuyScreen extends Table {
     public BuyScreen() {
         final BuyScreen bs = this;
         
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = GameApplication.getAssetManager().get("uiskin.json", Skin.class);
         
         Button button = new Button(skin);
         button.addListener(new ChangeListener() {
@@ -63,15 +66,30 @@ public class BuyScreen extends Table {
         button2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor target) {
-                objectBeingBought = new Toy();
+                objectBeingBought = new Toy(
+                        2, 2,
+                        Activity.Place.FLOOR,
+                        GameApplication.getAssetManager().get("toy.png", Texture.class),
+                        new Interest("Butts")
+                );
             }
         });
         button2.add(new Image(GameApplication.getAssetManager().get("toy.png", Texture.class)));
         add(button2);
         
+        Button button3 = new Button(skin);
+        button3.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor target) {
+                objectBeingBought = new Chair();
+            }
+        });
+        button3.add(new Image(GameApplication.getAssetManager().get("chair.png", Texture.class)));
+        add(button3).size(32, 32);
+        
         this.setFillParent(true);
         
-        Pixmap pm = new Pixmap(ActivityGrid.TILE_WIDTH, ActivityGrid.TILE_HEIGHT, Pixmap.Format.RGBA8888);
+        Pixmap pm = new Pixmap(ItemGrid.TILE_WIDTH, ItemGrid.TILE_HEIGHT, Pixmap.Format.RGBA8888);
         pm.setColor(Color.WHITE);
         pm.drawLine(0, 0, pm.getWidth()-1, 0);
         pm.drawLine(0, 0, 0, pm.getHeight()-1);
@@ -104,7 +122,7 @@ public class BuyScreen extends Table {
             objectBeingBought.setX(vec.x);
             objectBeingBought.setY(vec.y);
             
-            homeStage.getActivityGrid().snapToTile(objectBeingBought, ActivityTile.TileSide.TOP);
+            homeStage.getItemGrid().snapToTile(objectBeingBought, ItemTile.TileSide.BOTTOM);
             
             objectBeingBought.act(deltaSeconds);
             
@@ -155,10 +173,10 @@ public class BuyScreen extends Table {
     
     private void handleTouch(InputEvent event) {
         if(event.getButton() == 0) {
-            if(objectBeingBought != null && homeStage.getActivityGrid().canPlace(objectBeingBought)) {
-                homeStage.getActivityGrid().place(objectBeingBought);
+            if(objectBeingBought != null && homeStage.getItemGrid().canPlace(objectBeingBought)) {
+                homeStage.getItemGrid().place(objectBeingBought);
                 homeStage.addActor(objectBeingBought);
-                homeStage.addActivity(objectBeingBought);
+                if(objectBeingBought instanceof Activity) homeStage.addActivity((Activity)objectBeingBought);
                 objectBeingBought = null;
                 event.handle();
             }
@@ -179,11 +197,11 @@ public class BuyScreen extends Table {
     }
     
     public void drawGrid(Batch batch) {
-        ActivityTile[][] tiles = homeStage.getActivityGrid().getTiles();
+        ItemTile[][] tiles = homeStage.getItemGrid().getTiles();
         int[][] occupied = new int[0][0];
         if(objectBeingBought != null) {
-            occupied = homeStage.getActivityGrid().getOccopiedTiles(objectBeingBought);
-            //Gdx.app.log("BUYSCREEN", "OCCUPIED: " + occupied[0][0] + "," + occupied[0][1]);
+            occupied = homeStage.getItemGrid().getOccopiedTiles(objectBeingBought);
+            
             // Reserving tiles is for drawing purposes only
             for(int i = 0; i < occupied.length; i++) {
                 tiles[occupied[i][1]][occupied[i][0]].reserve();
@@ -205,14 +223,16 @@ public class BuyScreen extends Table {
                     batch.setColor(Color.WHITE);
                 }
                 
-                batch.draw(tileTex, x*ActivityGrid.TILE_WIDTH, y*ActivityGrid.TILE_HEIGHT);
+                batch.draw(tileTex, x*ItemGrid.TILE_WIDTH, y*ItemGrid.TILE_HEIGHT);
             }
         }
         batch.setColor(oldCol);
         
         // Release the reserved tiles
         for(int i = 0; i < occupied.length; i++) {
-            tiles[occupied[i][1]][occupied[i][0]].unreserve();
+            int x = occupied[i][0];
+            int y = occupied[i][1];
+            tiles[y][x].unreserve();
         }
     }
     

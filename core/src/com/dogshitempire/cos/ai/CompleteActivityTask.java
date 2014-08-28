@@ -5,7 +5,7 @@
 package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.dogshitempire.cos.activities.Activity;
+import com.dogshitempire.cos.items.activities.Activity;
 
 /**
  *
@@ -49,7 +49,7 @@ public class CompleteActivityTask extends Task {
     
     @Override
     public void onBegin() {
-        if(activity.satisfiesNeed(needToSatisfy)) {
+        if(activity.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) {
             if(!activity.reserveSlot(goal.getBrain().getCat())) {
                 abort();
             }
