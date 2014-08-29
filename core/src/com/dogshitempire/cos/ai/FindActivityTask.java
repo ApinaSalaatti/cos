@@ -19,18 +19,18 @@ public class FindActivityTask extends Task {
         needToSatisfy = need;
     }
     
-    @Override
-    public void onDone() {
-        //Gdx.app.log("FAT", "GUESS WERE DONE!! " + getNextTask().toString());
-        if(getNextTask() instanceof GoToPositionTask) {
-            //Gdx.app.log("FFT", "SETTING POS!!");
-            GoToPositionTask gtpt = (GoToPositionTask)getNextTask();
-            gtpt.setTarget(foundActivity);
-        }
+    public Activity getFoundActivity() {
+        return foundActivity;
     }
     
     @Override
     public void update(float deltaSeconds) {
+        if(foundActivity != null) {
+            if(foundActivity.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) {
+                return;
+            }
+        }
+        
         HomeStage hs = (HomeStage)goal.getBrain().getCat().getStage();
         Array<Activity> activities = hs.getActivities();
         
@@ -46,5 +46,10 @@ public class FindActivityTask extends Task {
         
         //Gdx.app.log("FFT", "ABORT!!");
         abort();
+    }
+    
+    @Override
+    public boolean done() {
+        return (foundActivity != null && foundActivity.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) || done;
     }
 }

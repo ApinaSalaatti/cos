@@ -35,16 +35,8 @@ public class CompleteActivityTask extends Task {
         needToSatisfy = need;
     }
     
-    @Override
-    public void setTarget(Actor a) {
-        super.setTarget(a);
-        
-        if(a instanceof Activity) {
-            activity = (Activity)a;
-        }
-        else {
-            abort();
-        }
+    public void setActivity(Activity a) {
+        activity = a;
     }
     
     @Override
@@ -57,6 +49,11 @@ public class CompleteActivityTask extends Task {
         else {
             abort();
         }
+    }
+    
+    @Override
+    public void onAbort() {
+        activity.freeSlot(goal.getBrain().getCat());
     }
     
     @Override

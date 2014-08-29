@@ -44,6 +44,12 @@ public class Bowl extends Activity {
         waterTex = GameApplication.getAssetManager().get("bowl_water.png", Texture.class);
         
         tex = emptyTex;
+        
+        for(int y = 0; y < 2; y++) {
+            for(int x = 0; x < 2; x++) {
+                getTile(x, y).take();
+            }
+        }
     }
     
     @Override

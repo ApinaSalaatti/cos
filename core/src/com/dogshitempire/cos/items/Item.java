@@ -1,8 +1,9 @@
 package com.dogshitempire.cos.items;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -65,6 +66,30 @@ public abstract class Item extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
         batch.draw(tex, getX(), getY());
+    }
+    
+    @Override
+    public Actor hit(float x, float y, boolean touchable) {
+        if(super.hit(x, y, touchable) != null) {
+            Vector2 pos = getGridPosition(x, y);
+            if(grid[(int)pos.y][(int)pos.x].isTaken()) {
+                return this;
+            }
+        }
+        
+        return null;
+    }
+    
+    private Vector2 getGridPosition(float x, float y) {
+        Vector2 vec = new Vector2();
+        x /= ItemGrid.TILE_WIDTH;
+        x = MathUtils.floor(x);
+        y /= ItemGrid.TILE_HEIGHT;
+        y = MathUtils.floor(y);
+        
+        vec.set(x, y);
+        
+        return vec;
     }
 
     public abstract String getInfo();

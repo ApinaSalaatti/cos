@@ -22,6 +22,12 @@ public class Toy extends Activity {
         satisfiedInterests.addAll(interestsSatisfied);
         
         this.tex = tex;
+        
+        for(int y = 0; y < height; y++) {
+            for(int x = 0; x < width; x++) {
+                getTile(x, y).take();
+            }
+        }
     }
     
     @Override

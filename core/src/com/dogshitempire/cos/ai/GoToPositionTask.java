@@ -33,24 +33,14 @@ public class GoToPositionTask extends Task {
     }
     
     @Override
-    public void setTarget(Actor a) {
-        super.setTarget(a);
-        setPosition(a.getX(), a.getY());
-    }
-    
-    @Override
-    public void onDone() {
-        getNextTask().setTarget(target);
-    }
-    
-    @Override
     public void update(float deltaSeconds) {
         Cat cat = goal.getBrain().getCat();
-        
-        if(position.dst(cat.getX(), cat.getY()) <= 2) {
-            getDone();
-        }
-        
         cat.getMover().setTarget(position.x, position.y);
+    }
+    
+    @Override
+    public boolean done() {
+        Cat cat = goal.getBrain().getCat();
+        return position.dst(cat.getX(), cat.getY()) <= 2;
     }
 }

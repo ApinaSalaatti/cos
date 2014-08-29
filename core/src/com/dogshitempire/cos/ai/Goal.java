@@ -65,7 +65,7 @@ public abstract class Goal {
     }
     
     public void update(float deltaSeconds) {
-        if(done || aborted) {
+        if(done || aborted || currentTask == null) {
             return;
         }
         

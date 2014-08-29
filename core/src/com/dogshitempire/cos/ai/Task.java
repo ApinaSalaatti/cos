@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author Super-Aapo
  */
 public abstract class Task {
-    private boolean aborted;
-    private boolean done;
+    protected boolean aborted;
+    protected boolean done;
     
     private Task nextTask;
     

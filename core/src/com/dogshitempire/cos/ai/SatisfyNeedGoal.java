@@ -11,21 +11,55 @@ public class SatisfyNeedGoal extends Goal {
     private int need;
     private float tolerance;
     
+    private FindActivityTask find;
+    private GoToPositionTask move;
+    private CompleteActivityTask complete;
+    
     public SatisfyNeedGoal(CatBrain brain, int need, float tolerance) {
         super(brain);
         
         this.need = need;
         this.tolerance = tolerance;
         
-        FindActivityTask fat = new FindActivityTask(this, need);
+        find = new FindActivityTask(this, need);
         //FindFoodTask fft = new FindFoodTask(this);
-        GoToPositionTask gtpt = new GoToPositionTask(this);
+        move = new GoToPositionTask(this);
         //EatFoodTask eft = new EatFoodTask(this);
-        CompleteActivityTask ct = new CompleteActivityTask(this, 2f, need);
-        fat.setNextTask(gtpt);
-        gtpt.setNextTask(ct);
+        complete = new CompleteActivityTask(this, 2f, need);
+        find.setNextTask(move);
+        move.setNextTask(complete);
         
-        this.setTask(fat);
+        //this.setTask(fat);
+    }
+    
+    @Override
+    public void update(float deltaSeconds) {
+        super.update(deltaSeconds);
+        
+        if(find.done()) {
+            move.setPosition(find.getFoundActivity().getX(), find.getFoundActivity().getY());
+            if(move.done()) {
+                complete.setActivity(find.getFoundActivity());
+                if(complete.done()) {
+                    getDone();
+                }
+                else {
+                    complete.update(deltaSeconds);
+                    if(complete.aborted()) {
+                        abort();
+                    }
+                }
+            }
+            else {
+                move.update(deltaSeconds);
+            }
+        }
+        else {
+            find.update(deltaSeconds);
+            if(find.aborted()) {
+                abort();
+            }
+        }
     }
     
     @Override

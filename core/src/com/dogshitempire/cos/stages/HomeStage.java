@@ -71,7 +71,8 @@ public class HomeStage extends GameStage {
     public void addCat() {
         Cat cat = catFactory.createCat();
         cat.setX(6);
-        cat.setY(6);
+        cat.setY(300);
+        cat.getMover().setGrid(itemGrid);
         addActor(cat);
         cats.add(cat);
         

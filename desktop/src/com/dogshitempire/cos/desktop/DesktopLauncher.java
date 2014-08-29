@@ -9,6 +9,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
                 config.width = 900;
                 config.height = 600;
+                config.title = "Can't Hug Every Cat";
 		new LwjglApplication(new GameApplication(), config);
 	}
 }

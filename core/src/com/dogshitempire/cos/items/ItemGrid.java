@@ -4,9 +4,9 @@
  */
 package com.dogshitempire.cos.items;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 
 /**
  *
@@ -46,18 +46,21 @@ public class ItemGrid {
         
         int amount = (maxY - minY + 1) * (maxX - minX + 1);
         
-        int[][] arr = new int[amount][2];
-        int i = 0;
+        Array<int[]> a = new Array<int[]>();
         
-        for(int y = minY; y <= maxY; y++) {
-            for(int x = minX; x <= maxX; x++) {
-                arr[i][0] = x;
-                arr[i][1] = y;
-                i++;
+        for(int y = 0; y < item.getHeightInTiles(); y++) {
+            for(int x = 0; x < item.getWidthInTiles(); x++) {
+                if(item.getTile(x, y).isTaken()) {
+                    
+                    int[] i = new int[2];
+                    i[0] = (int)bl.x + x;
+                    i[1] = (int)bl.y + y;
+                    a.add(i);
+                }
             }
         }
         
-        return arr;
+        return a.toArray(int[].class);
     }
     
     public boolean canPlace(Item item) {
@@ -65,28 +68,28 @@ public class ItemGrid {
         Vector2 tr = getGridPosition(item.getRight(), item.getTop());
         
         if(bl.x < 0 || bl.x >= tiles[0].length-item.getWidthInTiles() || bl.y < 0 || bl.y >= tiles.length-item.getHeightInTiles()) {
-            Gdx.app.log("IG", "TOO FAR bl: " + bl.y + " vs" + (tiles.length-item.getHeightInTiles()));
+            //Gdx.app.log("IG", "TOO FAR bl: " + bl.y + " vs" + (tiles.length-item.getHeightInTiles()));
             return false;
         }
         if(tr.x < 0 || tr.x >= tiles[0].length || tr.y < 0 || tr.y >= tiles.length) {
-            Gdx.app.log("IG", "TOO FAR tr: " + tr.y + " vs" + (tiles.length-item.getHeightInTiles()));
+            //Gdx.app.log("IG", "TOO FAR tr: " + tr.y + " vs" + (tiles.length-item.getHeightInTiles()));
             return false;
         }
         
         for(int y = (int)bl.y; y <= (int)tr.y; y++) {
             for(int x = (int)bl.x; x <= (int)tr.x; x++) {
                 if(tiles[y][x].isTaken()) {
-                    Gdx.app.log("IG", "TAKEN");
+                    //Gdx.app.log("IG", "TAKEN");
                     return false;
                 }
             }
         }
         
-        Gdx.app.log("IG", "CAN STILL PLACE");
+        //Gdx.app.log("IG", "CAN STILL PLACE");
         // Make sure there's floor or ceiling present when needed
         switch(item.getPlace()) {
             case FLOOR:
-                Gdx.app.log("IG", "SIDE IS SOLID: " + sideIsSolid(item, ItemTile.TileSide.BOTTOM));
+                //Gdx.app.log("IG", "SIDE IS SOLID: " + sideIsSolid(item, ItemTile.TileSide.BOTTOM));
                 if(!sideIsSolid(item, ItemTile.TileSide.BOTTOM)) return false;
                 break;
             case CEILING:
@@ -122,12 +125,6 @@ public class ItemGrid {
                 }
             }
         }
-        
-        //for(int y = (int)bl.y; y <= (int)tr.y; y++) {
-        //    for(int x = (int)bl.x; x <= (int)tr.x; x++) {
-        //        tiles[y][x].take();
-        //    }
-        //}
     }
     
     public Vector2 getGridPosition(float x, float y) {
