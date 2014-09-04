@@ -38,7 +38,7 @@ public class WanderGoal extends Goal {
         }
         
         if(move.done()) {
-            float x = 10 + (float)Math.random()*Gdx.graphics.getWidth();
+            float x = 10 + (float)Math.random()*(Gdx.graphics.getWidth()-20);
             float y = 30;
             move.setPosition(x, y);
         }

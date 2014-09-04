@@ -5,7 +5,6 @@
 package com.dogshitempire.cos.ai;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.dogshitempire.cos.cats.Cat;
 
 /**
@@ -41,6 +40,6 @@ public class GoToPositionTask extends Task {
     @Override
     public boolean done() {
         Cat cat = goal.getBrain().getCat();
-        return position.dst(cat.getX(), cat.getY()) <= 2;
+        return position.dst(cat.getX(), cat.getY()) <= 15;
     }
 }

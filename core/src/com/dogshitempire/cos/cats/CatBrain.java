@@ -15,12 +15,6 @@ import com.dogshitempire.cos.ai.WanderGoal;
  * @author Super-Aapo
  */
 public class CatBrain {
-    private final int PRIORITY_HEALTH = 1000;
-    private final int PRIORITY_HUNGER = 100;
-    private final int PRIORITY_HAPPINESS = 90;
-    private final int PRIORITY_CLEANLINESS = 80;
-    private final int PRIORITY_WANDER = -100;
-    
     private final Cat cat;
     private float thinkTimer;
     private float thinkInterval;
@@ -55,10 +49,6 @@ public class CatBrain {
         if(currentGoal != null) {
             currentGoal.update(deltaSeconds);
             if(currentGoal.aborted() || currentGoal.done()) thinkTimer = thinkInterval;
-            //if(currentGoal.aborted() || currentGoal.done()) {
-            //    currentGoal.onFinish();
-            //    currentGoal = null;
-            //}  
         }
         
         thinkTimer += deltaSeconds;
@@ -88,24 +78,6 @@ public class CatBrain {
         cleanlinessGoal = new SatisfyNeedGoal(this, CatStats.NEED_CLEANLINESS, 30f);
         
         currentGoal = wanderGoal;
-        
-        /*
-        if(currentGoal instanceof WanderGoal) {
-            if(s.getHunger() < 45f) {
-                currentGoal.abort();
-                currentGoal.onFinish();
-                currentGoal = new SatisfyNeedGoal(this, CatStats.NEED_HUNGER);
-            }
-            else if(s.getHappiness() <= 45f) {
-                currentGoal.abort();
-                currentGoal.onFinish();
-                currentGoal = new SatisfyNeedGoal(this, CatStats.NEED_HAPPINESS);
-            }
-            else {
-                currentGoal = new WanderGoal(this);
-            }
-        }
-        */
     }
     
     public Cat getCat() {

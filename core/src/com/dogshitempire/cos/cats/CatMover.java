@@ -4,10 +4,10 @@
  */
 package com.dogshitempire.cos.cats;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.dogshitempire.cos.items.ItemGrid;
 import com.dogshitempire.cos.items.ItemTile;
-import com.dogshitempire.cos.stages.HomeStage;
 
 /**
  *
@@ -38,7 +38,8 @@ public class CatMover {
     }
     
     public void act(float deltaSeconds) {
-        Vector2 pos = grid.getGridPosition(cat.getX(), cat.getY());
+        // Check the position just below the center of the cat
+        Vector2 pos = grid.getGridPosition(cat.getX()+cat.getWidth()/2, cat.getY()-1);
         if(pos.x < 0 || pos.x >= grid.getTiles()[0].length || pos.y < 0 || pos.y >= grid.getTiles().length) {
             // WE ARE BEYOND THE GRID OH GOD!!
         }
@@ -63,7 +64,7 @@ public class CatMover {
         xDiff = xDiff / Math.abs(xDiff);
         float gravity = 0;
         
-        if(grounded) {
+        if(grounded && movement.y <= 0) {
             movement.y = 0;
         }
         else {
