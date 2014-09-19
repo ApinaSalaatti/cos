@@ -4,8 +4,10 @@
  */
 package com.dogshitempire.cos.ai;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.Gdx;
+import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.items.activities.Activity;
+import com.dogshitempire.cos.processes.DelayProcess;
 
 /**
  *
@@ -15,8 +17,10 @@ public class CompleteActivityTask extends Task {
     private Activity activity;
     private int needToSatisfy;
     
+    private DelayProcess delay;
+    
     private float activityTimer = 0f;
-    private float activityInterval = 2f;
+    private float activationSpeed = 2f;
     
     public CompleteActivityTask(Goal goal, float speed) {
         this(goal, speed, -1);
@@ -25,13 +29,13 @@ public class CompleteActivityTask extends Task {
     /**
      * 
      * @param goal
-     * @param speed how many seconds should pass between each time progress is added on the activity
+     * @param speed how many seconds should pass before the activity is done
      * @param need the need we want to satisfy. If -1 this Task accepts any activity
      */
     public CompleteActivityTask(Goal goal, float speed, int need) {
         super(goal);
         
-        activityInterval = speed;
+        activationSpeed = speed;
         needToSatisfy = need;
     }
     
@@ -41,9 +45,14 @@ public class CompleteActivityTask extends Task {
     
     @Override
     public void onBegin() {
-        if(activity.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) {
+        //Gdx.app.log("CAT", "BEGINNN");
+        if(needToSatisfy == -1 || activity.satisfiesNeed(needToSatisfy, goal.getBrain().getCat())) {
             if(!activity.reserveSlot(goal.getBrain().getCat())) {
                 abort();
+            }
+            else {
+                delay = new DelayProcess(activationSpeed);
+                GameApplication.getProcessManager().addProcess(delay);
             }
         }
         else {
@@ -54,16 +63,16 @@ public class CompleteActivityTask extends Task {
     @Override
     public void onAbort() {
         activity.freeSlot(goal.getBrain().getCat());
+        delay.abort();
     }
     
     @Override
     public void update(float deltaSeconds) {
-        activityTimer += deltaSeconds;
-        if(activityTimer >= activityInterval) {
-            activityTimer = 0;
-            if(activity.addProgress(goal.getBrain().getCat())) {
-                getDone();
-            }
+        //Gdx.app.log("CAT", "" + delay.getElapsed());
+        if(delay.succeeded()) {
+            //Gdx.app.log("CAT", "YAY!");
+            activity.activate(goal.getBrain().getCat());
+            getDone();
         }
     }
 }

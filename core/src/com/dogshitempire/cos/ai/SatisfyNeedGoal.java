@@ -1,6 +1,6 @@
 package com.dogshitempire.cos.ai;
 
-import com.dogshitempire.cos.cats.CatBrain;
+import com.badlogic.gdx.Gdx;
 import com.dogshitempire.cos.cats.CatStats;
 
 /**
@@ -65,20 +65,21 @@ public class SatisfyNeedGoal extends Goal {
     @Override
     public boolean aborted() {
         boolean needSatisfied = false;
-        CatStats stats = getBrain().getCat().getStats();
+        
+        PerceptionCenter p = getBrain().getPerceptions();
         
         switch(need) {
             case CatStats.NEED_CLEANLINESS:
-                if(stats.getCleanliness() > tolerance) needSatisfied = true;
+                if(p.cleanliness > tolerance) needSatisfied = true;
                 break;
             case CatStats.NEED_HAPPINESS:
-                if(stats.getHappiness() > tolerance) needSatisfied = true;
+                if(p.happiness > tolerance) needSatisfied = true;
                 break;
             case CatStats.NEED_HEALTH:
-                if(stats.getHealth() > tolerance) needSatisfied = true;
+                if(p.health > tolerance) needSatisfied = true;
                 break;
             case CatStats.NEED_HUNGER:
-                if(stats.getHunger() > tolerance) needSatisfied = true;
+                if(p.hunger > tolerance) needSatisfied = true;
                 break;
         }
         

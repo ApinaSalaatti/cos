@@ -6,18 +6,32 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.dogshitempire.cos.actors.GameActorManager;
 import com.dogshitempire.cos.events.EventManager;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.events.GameEventListener;
+import com.dogshitempire.cos.processes.ProcessManager;
 import com.dogshitempire.cos.stages.GameStage;
 import com.dogshitempire.cos.stages.MainMenuStage;
 
 public class GameApplication extends ApplicationAdapter implements GameEventListener {
+    public static boolean debugMode = true;
+    
     private GameStage currentStage;
     
     private static EventManager eventManager;
     public static EventManager getEventManager() {
         return eventManager;
+    }
+    
+    private static ProcessManager processManager;
+    public static ProcessManager getProcessManager() {
+        return processManager;
+    }
+    
+    private static GameActorManager actorManager;
+    public static GameActorManager getActorManager() {
+        return actorManager;
     }
     
     private static AssetManager assetManager;
@@ -29,6 +43,10 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
     public void create () {
         eventManager = new EventManager();
         eventManager.registerListener(GameEvent.changeStageEvent, this);
+        
+        processManager = new ProcessManager();
+        
+        actorManager = new GameActorManager();
         
         assetManager = new AssetManager();
         assetManager.load("bowl.png", Texture.class);
@@ -53,10 +71,15 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
         
         // Updating
         eventManager.update(deltaSeconds);
+        processManager.update(deltaSeconds);
         currentStage.act(deltaSeconds);
         
         // Rendering
         currentStage.draw();
+        
+        if(debugMode) {
+            currentStage.debugDraw();
+        }
     }
 
     public void changeStage(GameStage newStage) {

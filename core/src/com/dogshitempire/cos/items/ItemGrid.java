@@ -218,4 +218,11 @@ public class ItemGrid {
                 break;
         }
     }
+    
+    public float getWidth() {
+        return tiles[0].length * TILE_WIDTH;
+    }
+    public float getHeight() {
+        return tiles.length * TILE_HEIGHT;
+    }
 }

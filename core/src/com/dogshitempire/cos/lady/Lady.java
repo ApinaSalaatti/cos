@@ -6,17 +6,19 @@ package com.dogshitempire.cos.lady;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.dogshitempire.cos.GameApplication;
+import com.dogshitempire.cos.actors.GameActor;
 
 /**
  *
  * @author Super-Aapo
  */
-public class Lady extends Actor {
+public class Lady extends GameActor {
     private Texture tex;
     
-    public Lady() {
+    public Lady(int id) {
+        super(id);
+        
         tex = GameApplication.getAssetManager().get("lady.png", Texture.class);
     }
     

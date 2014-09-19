@@ -22,4 +22,8 @@ public class GameStage extends Stage {
     public void onEnd() {
         
     }
+    
+    public void debugDraw() {
+        
+    }
 }

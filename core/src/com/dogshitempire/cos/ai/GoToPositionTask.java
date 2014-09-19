@@ -4,6 +4,7 @@
  */
 package com.dogshitempire.cos.ai;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.dogshitempire.cos.cats.Cat;
 
@@ -29,6 +30,9 @@ public class GoToPositionTask extends Task {
     public void setPosition(float x, float y) {
         position.x = x;
         position.y = y;
+    }
+    public Vector2 getPosition() {
+        return position.cpy();
     }
     
     @Override

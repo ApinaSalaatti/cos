@@ -4,27 +4,25 @@
  */
 package com.dogshitempire.cos.cats;
 
+import com.dogshitempire.cos.actors.GameActor;
+import com.dogshitempire.cos.ai.CatBrain;
 import com.dogshitempire.cos.cats.buffs.CatBuff;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.GameApplication;
+import com.dogshitempire.cos.stages.HomeStage;
 import java.util.Iterator;
 
 /**
  *
  * @author Super-Aapo
  */
-public class Cat extends Actor {
-    private int catID;
-    public int getID() {
-        return catID;
-    }
-    
+public class Cat extends GameActor {
     public static final int GENDER_FEMALE = 1;
     public static final int GENDER_MALE = 2;
     
@@ -35,6 +33,8 @@ public class Cat extends Actor {
     private Texture selected;
     private boolean isSelected = false;
     
+    private HomeStage homeStage;
+    
     private CatStats stats;
     private CatMover mover;
     private CatBrain brain;
@@ -42,7 +42,7 @@ public class Cat extends Actor {
     private Array<CatBuff> buffs;
     
     public Cat(int id) {
-        catID = id;
+        super(id);
         
         tex = GameApplication.getAssetManager().get("cat.png", Texture.class);
         Pixmap pm = new Pixmap(tex.getWidth(), tex.getHeight(), Format.RGBA8888);
@@ -55,6 +55,7 @@ public class Cat extends Actor {
         
         stats = new CatStats();
         mover = new CatMover(this);
+        
         brain = new CatBrain(this);
         
         buffs = new Array<CatBuff>();
@@ -138,19 +139,19 @@ public class Cat extends Actor {
         return stats;
     }
     
-    @Override
-    public boolean equals(Object other) {
-        if(other instanceof Cat) {
-            Cat c = (Cat)other;
-            if(c.getID() == getID()) {
-                return true;
-            }
-        }
-        return false;
+    public void debugDraw(Batch batch) {
+        stats.debugDraw(batch);
+        mover.debugDraw(batch);
+        brain.debugDraw(batch);
     }
     
     @Override
-    public int hashCode() {
-        return getID();
+    public void setStage(Stage stage) {
+        super.setStage(stage);
+        
+        homeStage = (HomeStage)stage;
+    }
+    public HomeStage getHomeStage() {
+        return homeStage;
     }
 }

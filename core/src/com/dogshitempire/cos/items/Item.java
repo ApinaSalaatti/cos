@@ -5,12 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.dogshitempire.cos.actors.GameActor;
 
 /**
  *
  * @author Merioksan Mikko
  */
-public abstract class Item extends Actor {
+public abstract class Item extends GameActor {
     public enum Place { FLOOR, WALL, CEILING, ANY };
     private Place place;
     
@@ -19,7 +20,21 @@ public abstract class Item extends Actor {
     
     private ItemTile[][] grid;
     
-    protected Texture tex;
+    private Texture tex;
+    public void setTexture(Texture tex) {
+        this.tex = tex;
+    }
+    
+    /**
+     * 
+     * @param id
+     * @param width width in tiles
+     * @param height height in tiles
+     * @param place 
+     */
+    public Item(int id) {
+        super(id);
+    }
     
     /**
      * 
@@ -27,7 +42,7 @@ public abstract class Item extends Actor {
      * @param height height in tiles
      * @param place 
      */
-    public Item(int width, int height, Place place) {
+    public void init(int width, int height, Place place) {
         this.widthInTiles = width;
         this.heightInTiles = height;
         

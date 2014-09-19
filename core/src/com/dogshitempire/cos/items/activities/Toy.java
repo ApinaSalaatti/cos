@@ -7,25 +7,41 @@ import com.dogshitempire.cos.cats.CatStats;
 import com.dogshitempire.cos.cats.Interest;
 import com.dogshitempire.cos.cats.buffs.CatBuff.BuffType;
 import com.dogshitempire.cos.cats.buffs.NeedBuff;
+import com.dogshitempire.cos.items.Item.Place;
 
 /**
  *
  * @author Merioksan Mikko
  */
-public class Toy extends Activity {
+public class Toy extends ActivityModifier {
     private final Array<Interest> satisfiedInterests;
 
-    public Toy(int width, int height, Activity.Place place, Texture tex, Interest ... interestsSatisfied) {
-        super(width, height, place, 1, 0.1f);
+    private int width;
+    private int height;
+    private Place place;
+    private Texture tex;
+    
+    public Toy(int w, int h, Place place, int maxUsers, Texture tex, Interest ... interestsSatisfied) {
+        super(maxUsers, 10f);
         
         satisfiedInterests = new Array<Interest>();
         satisfiedInterests.addAll(interestsSatisfied);
         
+        width = w;
+        height = h;
+        this.place = place;
         this.tex = tex;
+    }
+    
+    @Override
+    public void onAttach(Activity a) {
+        a.init(width, height, place);
+        
+        a.setTexture(tex);
         
         for(int y = 0; y < height; y++) {
             for(int x = 0; x < width; x++) {
-                getTile(x, y).take();
+                a.getTile(x, y).take();
             }
         }
     }
@@ -49,7 +65,7 @@ public class Toy extends Activity {
     }
     
     @Override
-    public void progressDone(Cat cat) {
+    public void activate(Cat cat) {
         cat.getStats().setHappiness(100f);
         cat.addBuff(new NeedBuff(BuffType.OVER_TIME, 10f, CatStats.NEED_HAPPINESS, 1f));
     }
@@ -65,6 +81,7 @@ public class Toy extends Activity {
             }
         }
         
+        s += ")";
         return s;
     }
 }

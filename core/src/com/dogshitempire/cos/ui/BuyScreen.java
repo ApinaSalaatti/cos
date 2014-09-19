@@ -48,44 +48,7 @@ public class BuyScreen extends Table {
     private HomeStage homeStage;
     
     public BuyScreen() {
-        final BuyScreen bs = this;
-        
         skin = GameApplication.getAssetManager().get("uiskin.json", Skin.class);
-        
-        Button button = new Button(skin);
-        button.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor target) {
-                objectBeingBought = new Bowl();
-            }
-        });
-        button.add(new Image(GameApplication.getAssetManager().get("bowl.png", Texture.class)));
-        add(button);
-        
-        Button button2 = new Button(skin);
-        button2.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor target) {
-                objectBeingBought = new Toy(
-                        2, 2,
-                        Activity.Place.FLOOR,
-                        GameApplication.getAssetManager().get("toy.png", Texture.class),
-                        new Interest("Butts")
-                );
-            }
-        });
-        button2.add(new Image(GameApplication.getAssetManager().get("toy.png", Texture.class)));
-        add(button2);
-        
-        Button button3 = new Button(skin);
-        button3.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor target) {
-                objectBeingBought = new Chair();
-            }
-        });
-        button3.add(new Image(GameApplication.getAssetManager().get("chair.png", Texture.class)));
-        add(button3).size(32, 32);
         
         this.setFillParent(true);
         
@@ -108,6 +71,36 @@ public class BuyScreen extends Table {
         
         s.setKeyboardFocus(this);
         homeStage = (HomeStage)s;
+        
+        Button button = new Button(skin);
+        button.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor target) {
+                objectBeingBought = homeStage.getGameObjectFactory().createActivity("bowl");
+            }
+        });
+        button.add(new Image(GameApplication.getAssetManager().get("bowl.png", Texture.class)));
+        add(button);
+        
+        Button button2 = new Button(skin);
+        button2.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor target) {
+                objectBeingBought = homeStage.getGameObjectFactory().createActivity("toy");
+            }
+        });
+        button2.add(new Image(GameApplication.getAssetManager().get("toy.png", Texture.class)));
+        add(button2);
+        
+        Button button3 = new Button(skin);
+        button3.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor target) {
+                objectBeingBought = homeStage.getGameObjectFactory().createFurniture("chair");
+            }
+        });
+        button3.add(new Image(GameApplication.getAssetManager().get("chair.png", Texture.class)));
+        add(button3).size(32, 32);
     }
     
     @Override

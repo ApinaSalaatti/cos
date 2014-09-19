@@ -15,9 +15,11 @@ import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.items.activities.Activity;
 import com.dogshitempire.cos.cats.Cat;
 import com.dogshitempire.cos.events.GameEvent;
-import com.dogshitempire.cos.factories.CatFactory;
+import com.dogshitempire.cos.factories.GameObjectFactory;
 import com.dogshitempire.cos.items.ItemGrid;
 import com.dogshitempire.cos.lady.Lady;
+import com.dogshitempire.cos.research.ResearchManager;
+import com.dogshitempire.cos.shopping.ShoppingManager;
 import com.dogshitempire.cos.ui.ActionSelection;
 import com.dogshitempire.cos.ui.BuyScreen;
 import com.dogshitempire.cos.ui.CatSummary;
@@ -32,13 +34,26 @@ public class HomeStage extends GameStage {
     
     private Lady lady;
     
-    private CatFactory catFactory;
+    private GameObjectFactory gameObjectFactory;
+    public GameObjectFactory getGameObjectFactory() {
+        return gameObjectFactory;
+    }
     private Array<Cat> cats;
     
     private Array<Activity> activities;
     private ItemGrid itemGrid;
     public ItemGrid getItemGrid() {
         return itemGrid;
+    }
+    
+    private ResearchManager researchManager;
+    public ResearchManager getResearch() {
+        return researchManager;
+    }
+    
+    private ShoppingManager shoppingManager;
+    public ShoppingManager getShopping() {
+        return shoppingManager;
     }
     
     private Vector2 stageCoords = new Vector2();
@@ -49,18 +64,21 @@ public class HomeStage extends GameStage {
     private Label infoLabel;
     
     public HomeStage() {
-        catFactory = new CatFactory();
+        gameObjectFactory = new GameObjectFactory();
         cats = new Array<Cat>();
         activities = new Array<Activity>();
         itemGrid = new ItemGrid();
         
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        shoppingManager = new ShoppingManager();
+        researchManager = new ResearchManager();
+        
+        skin = GameApplication.getAssetManager().get("uiskin.json", Skin.class);
         
         catSummary = new CatSummary();
         catSummary.setPosition(150, 150);
         addActor(catSummary);
         
-        lady = new Lady();
+        lady = gameObjectFactory.createLady();
         lady.setX(350);
         lady.setY(6);
         addActor(lady);
@@ -69,7 +87,7 @@ public class HomeStage extends GameStage {
     }
     
     public void addCat() {
-        Cat cat = catFactory.createCat();
+        Cat cat = gameObjectFactory.createCat();
         cat.setX(6);
         cat.setY(300);
         cat.getMover().setGrid(itemGrid);
@@ -77,13 +95,21 @@ public class HomeStage extends GameStage {
         cats.add(cat);
         
         addActor(new MessageWindow("Oh hey, you found a new cat! That's cool!"));
+        GameApplication.getActorManager().addActor(cat);
         GameApplication.getEventManager().queueEvent(new GameEvent(GameEvent.catCreatedEvent, cat));
     }
     
     public void addActivity(Activity a) {
         activities.add(a);
         addActor(a);
+        GameApplication.getActorManager().addActor(a);
         GameApplication.getEventManager().queueEvent(new GameEvent(GameEvent.activityCreatedEvent, a));
+    }
+    public void removeActivity(Activity a) {
+        activities.removeValue(a, true);
+        this.getActors().removeValue(a, true);
+        GameApplication.getActorManager().removeActor(a.getID());
+        GameApplication.getEventManager().queueEvent(new GameEvent(GameEvent.activityRemovedEvent, a));
     }
     public Array<Activity> getActivities() {
         return activities;
@@ -203,5 +229,14 @@ public class HomeStage extends GameStage {
         }
         
         return false;
+    }
+    
+    @Override
+    public void debugDraw() {
+        getBatch().begin();
+        for(Cat c : cats) {
+            c.debugDraw(getBatch());
+        }
+        getBatch().end();
     }
 }

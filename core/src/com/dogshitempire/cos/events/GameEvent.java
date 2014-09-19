@@ -15,6 +15,10 @@ public class GameEvent {
     public static final int changeStageEvent = 1;
     public static final int catCreatedEvent = 2;
     public static final int activityCreatedEvent = 3;
+    public static final int researchUnlockedEvent = 4;
+    public static final int itemUnlockedEvent = 5;
+    public static final int catRemovedEvent = 6;
+    public static final int activityRemovedEvent = 7;
 
     private int eventType;
     private Object eventData;

@@ -5,7 +5,6 @@
 package com.dogshitempire.cos.ai;
 
 import com.dogshitempire.cos.cats.Cat;
-import com.dogshitempire.cos.cats.CatBrain;
 
 /**
  *
@@ -15,6 +14,9 @@ public abstract class Goal {
     private CatBrain brain;
     public CatBrain getBrain() {
         return brain;
+    }
+    public void setBrain(CatBrain b) {
+        brain = b;
     }
     
     protected boolean aborted;
@@ -29,6 +31,10 @@ public abstract class Goal {
     public Goal(CatBrain brain) {
         this.brain = brain;
         
+        aborted = false;
+        done = false;
+    }
+    public Goal() {
         aborted = false;
         done = false;
     }

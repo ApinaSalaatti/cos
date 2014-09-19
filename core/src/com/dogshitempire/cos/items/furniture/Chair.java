@@ -11,8 +11,10 @@ import com.dogshitempire.cos.items.ItemTile;
  */
 public class Chair extends Item {
 
-    public Chair() {
-        super(4, 8, Item.Place.FLOOR);
+    public Chair(int id) {
+        super(id);
+        
+        super.init(4, 8, Item.Place.FLOOR);
         
         getTile(0,3).setSolid(ItemTile.TileSide.TOP, true);
         getTile(1,3).setSolid(ItemTile.TileSide.TOP, true);
@@ -33,7 +35,7 @@ public class Chair extends Item {
         getTile(3,2).take();
         getTile(3,3).take();
         
-        tex = GameApplication.getAssetManager().get("chair.png", Texture.class);
+        setTexture(GameApplication.getAssetManager().get("chair.png", Texture.class));
     }
     
     @Override

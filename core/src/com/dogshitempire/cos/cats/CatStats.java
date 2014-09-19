@@ -4,6 +4,7 @@
  */
 package com.dogshitempire.cos.cats;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -154,5 +155,9 @@ public class CatStats {
     public boolean removeSkill(String skill) {
         Skill s = getSkill(skill);
         return removeSkill(s);
+    }
+    
+    public void debugDraw(Batch batch) {
+        
     }
 }
