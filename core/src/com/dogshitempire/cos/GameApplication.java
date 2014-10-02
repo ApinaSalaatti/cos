@@ -10,6 +10,7 @@ import com.dogshitempire.cos.actors.GameActorManager;
 import com.dogshitempire.cos.events.EventManager;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.events.GameEventListener;
+import com.dogshitempire.cos.localization.Localization;
 import com.dogshitempire.cos.processes.ProcessManager;
 import com.dogshitempire.cos.stages.GameStage;
 import com.dogshitempire.cos.stages.MainMenuStage;
@@ -41,6 +42,9 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
 
     @Override
     public void create () {
+        Localization.init();
+        Localization.setLanguage("en");
+        
         eventManager = new EventManager();
         eventManager.registerListener(GameEvent.changeStageEvent, this);
         

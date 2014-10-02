@@ -1,0 +1,9 @@
+{
+	cat: "cat",
+	cleanliness: "cleanliness",
+	happiness: "happiness",
+	health: "health",
+	hunger: "hunger",
+	new_cat: "Oh you found a new cat. Very nice!",
+	start_game: "Start the game, meow!"
+}

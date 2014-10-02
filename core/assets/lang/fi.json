@@ -1,0 +1,9 @@
+{
+	cat: "kissa",
+	cleanliness: "puhtaus",
+	happiness: "onnellisuus",
+	health: "terveys",
+	hunger: "nälkä",
+	new_cat: "Löysit uuden kissan. Kuinka mukavaa!",
+	start_game: "Aloita peli, miau!"
+}

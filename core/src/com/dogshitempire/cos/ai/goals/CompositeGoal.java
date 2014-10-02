@@ -46,6 +46,10 @@ public abstract class CompositeGoal extends Goal {
         subgoals.insert(0, g);
     }
     
+    public Goal getCurrentGoal() {
+        return subgoals.first();
+    }
+    
     public void removeSubgoals() {
         while(subgoals.size > 0) {
             Goal g = subgoals.removeIndex(0);

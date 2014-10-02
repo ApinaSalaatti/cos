@@ -19,7 +19,7 @@ public class Activity extends Item {
     }
     
     public Vector2 getActivationPosition() {
-        return new Vector2(getX(), getY());
+        return modifier.getActivationPosition();
     }
     
     public boolean reserveSlot(Cat cat) {

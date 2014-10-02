@@ -1,7 +1,12 @@
 package com.dogshitempire.cos.ai.goals;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
+import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.ai.CatBrain;
+import com.dogshitempire.cos.ai.goals.evaluators.SatisfyNeedGoalEvaluator;
+import com.dogshitempire.cos.ai.goals.evaluators.WanderGoalEvaluator;
+import com.dogshitempire.cos.cats.CatStats;
 
 /**
  *
@@ -14,10 +19,18 @@ public class GoalChooser extends CompositeGoal {
         super(owner, Goal.GOAL_CHOOSER);
         
         evaluators = new Array<GoalEvaluator>();
+        
+        evaluators.add(new WanderGoalEvaluator(owner));
+        evaluators.add(new SatisfyNeedGoalEvaluator(owner, CatStats.NEED_CLEANLINESS));
+        evaluators.add(new SatisfyNeedGoalEvaluator(owner, CatStats.NEED_HAPPINESS));
+        evaluators.add(new SatisfyNeedGoalEvaluator(owner, CatStats.NEED_HEALTH));
+        evaluators.add(new SatisfyNeedGoalEvaluator(owner, CatStats.NEED_HUNGER));
     }
     
     @Override
     public void activate() {
+        if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "Figuring out new goal");
+        
         float best = -1;
         GoalEvaluator bestEvaluator = null;
         
@@ -34,6 +47,7 @@ public class GoalChooser extends CompositeGoal {
         }
         else {
             addSubgoal(bestEvaluator.giveGoal());
+            if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "New goal found:" + getCurrentGoal());
         }
         
         setStatus(GoalStatus.ACTIVE);
@@ -51,6 +65,7 @@ public class GoalChooser extends CompositeGoal {
         GoalStatus status = processSubgoals(deltaSeconds);
         
         if(status == GoalStatus.COMPLETED || status == GoalStatus.FAILED) {
+            if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "Goal completed");
             setStatus(GoalStatus.INACTIVE);
         }
         

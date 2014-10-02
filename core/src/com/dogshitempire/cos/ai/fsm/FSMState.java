@@ -3,7 +3,6 @@ package com.dogshitempire.cos.ai.fsm;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.dogshitempire.cos.GameApplication;
-import com.dogshitempire.cos.ai.Goal;
 
 /**
  *

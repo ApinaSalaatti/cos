@@ -1,5 +1,6 @@
 package com.dogshitempire.cos.items.activities;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.cats.Cat;
 
@@ -31,6 +32,11 @@ public abstract class ActivityModifier {
         onAttach(a);
     }
     
+    /**
+     * 
+     * @param cat
+     * @return true if reserving is succesfull
+     */
     public boolean reserveSlot(Cat cat) {
         int slot = findFreeSlot();
         if(slot == -1) {
@@ -41,12 +47,15 @@ public abstract class ActivityModifier {
         return true;
     }
     
-    public void freeSlot(Cat cat) {
+    public boolean freeSlot(Cat cat) {
         for(int i = 0; i < users.length; i++) {
             if(users[i] == cat) {
                 users[i] = null;
+                return true;
             }
         }
+        
+        return false;
     }
     
     public boolean hasFreeSlot() {
@@ -91,6 +100,10 @@ public abstract class ActivityModifier {
     }
     public Array<String> getPossibleActions() {
         return possibleActions;
+    }
+    
+    public Vector2 getActivationPosition() {
+        return new Vector2(activity.getX(), activity.getY());
     }
     
     protected abstract void onAttach(Activity a);

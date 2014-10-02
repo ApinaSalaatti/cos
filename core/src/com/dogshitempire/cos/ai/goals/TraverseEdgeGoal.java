@@ -20,6 +20,7 @@ public class TraverseEdgeGoal extends Goal {
     
     @Override
     public void activate() {
+        setStatus(GoalStatus.ACTIVE);
         getBrain().getCat().getMover().setTarget(edge.getEnd().x, edge.getEnd().y);
     }
     
@@ -29,6 +30,7 @@ public class TraverseEdgeGoal extends Goal {
         
         if(getBrain().getCat().getMover().isAtPosition(edge.getEnd().x, edge.getEnd().y)) {
             setStatus(GoalStatus.COMPLETED);
+            getBrain().getCat().getMover().stop();
         }
         
         return getStatus();

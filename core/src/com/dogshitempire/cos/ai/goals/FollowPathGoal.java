@@ -1,6 +1,7 @@
 package com.dogshitempire.cos.ai.goals;
 
 import com.badlogic.gdx.utils.Array;
+import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.ai.CatBrain;
 import com.dogshitempire.cos.ai.pathfinding.PathEdge;
 
@@ -23,12 +24,16 @@ public class FollowPathGoal extends CompositeGoal {
         
         PathEdge edge = path.removeIndex(0);
         
+        if(GameApplication.debugMode) {
+            System.out.println("Edges left: " + path.size);
+        }
+        
         switch(edge.getTraverseMethod()) {
             case WALK:
                 addSubgoal(new TraverseEdgeGoal(getBrain(), edge, path.size == 0));
                 break;
             case JUMP:
-                //addSubgoal(new JumpGoal(getBrain(), edge));
+                addSubgoal(new JumpGoal(getBrain(), edge));
                 break;
         }
     }
@@ -39,7 +44,14 @@ public class FollowPathGoal extends CompositeGoal {
         
         setStatus(processSubgoals(deltaSeconds));
         if(getStatus() == GoalStatus.COMPLETED && path.size > 0) {
+            if(GameApplication.debugMode) System.out.println("Edge complete, edges left: " + path.size);
             activate();
+        }
+        else if(getStatus() == GoalStatus.COMPLETED) {
+            if(GameApplication.debugMode) System.out.println("Path complete");
+        }
+        else if(getStatus() == GoalStatus.FAILED) {
+            if(GameApplication.debugMode) System.out.println("Path failed");
         }
         
         return getStatus();

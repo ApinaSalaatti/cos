@@ -39,13 +39,7 @@ public class SatisfyNeedGoal extends CompositeGoal {
     public GoalStatus update(float deltaSeconds) {
         activateIfInactive();
         
-        if(!getBrain().getPerceptions().canSatisfyNeed(need)) {
-            terminate();
-        }
-        else {
-            setStatus(processSubgoals(deltaSeconds));
-        }
-        
+        setStatus(processSubgoals(deltaSeconds));
         return getStatus();
     }
     
@@ -62,7 +56,7 @@ public class SatisfyNeedGoal extends CompositeGoal {
                 return Goal.GOAL_SATISFY_HAPPINESS;
             case CatStats.NEED_HEALTH:
                 return Goal.GOAL_SATISFY_HEALTH;
-            default: // an incorrect need falls back to hunger. It just does.
+            default: // an incorrect need falls back to hunger. I dunno. I guess I'm a bit hungry right now.
                 return Goal.GOAL_SATISFY_HUNGER;
         }
     }

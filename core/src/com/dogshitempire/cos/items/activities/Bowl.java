@@ -74,10 +74,18 @@ public class Bowl extends ActivityModifier {
     
     @Override
     public void activate(Cat cat) {
+        if(!isBeingUsedBy(cat)) {
+            return;
+        }
+        
         amountOfContent--;
         reservedContent--;
+        freeSlot(cat);
         
         if(amountOfContent == 0) {
+            removeAllPossibleActions();
+            addPossibleAction(foodFill);
+            addPossibleAction(waterFill);
             activity.setTexture(emptyTex);
         }
         
@@ -126,20 +134,18 @@ public class Bowl extends ActivityModifier {
             }
         }
         else if(action.equals(emptyContents)) {
-            if(amountOfContent > 0) {
-                amountOfContent = 0;
-                removeAllPossibleActions();
-                addPossibleAction(foodFill);
-                addPossibleAction(waterFill);
-                activity.setTexture(emptyTex);
-            }
+            amountOfContent = 0;
+            removeAllPossibleActions();
+            addPossibleAction(foodFill);
+            addPossibleAction(waterFill);
+            activity.setTexture(emptyTex);
         }
     }
     
     @Override
     public String getInfo() {
         if(amountOfContent > 0) {
-            return "Filled with " + getContentAsString() + ", has " + amountOfContent + " portions left";
+            return "Filled with " + getContentAsString() + ", has " + amountOfContent + " portions left (" + reservedContent + " reserved)";
         }
         else {
             return "Empty";

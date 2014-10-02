@@ -22,6 +22,7 @@ public class WanderGoal extends Goal{
         
         float x = 10 + (float)Math.random() * (getBrain().getCat().getHomeStage().getItemGrid().getWidth() - 50);
         float y = 30;
+        target.set(x, y);
         
         getBrain().getCat().getMover().setTarget(x, y);
     }
@@ -32,6 +33,7 @@ public class WanderGoal extends Goal{
         
         if(getBrain().getCat().getMover().isAtPosition(target.x, target.y)) {
             setStatus(GoalStatus.COMPLETED);
+            getBrain().getCat().getMover().stop();
         }
         
         return getStatus();

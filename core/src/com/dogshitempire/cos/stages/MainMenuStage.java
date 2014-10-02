@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.events.GameEvent;
+import com.dogshitempire.cos.localization.Localization;
 
 /**
  *
@@ -22,7 +23,7 @@ public class MainMenuStage extends GameStage {
     public MainMenuStage() {
         skin = new Skin(Gdx.files.internal("uiskin.json"));
         
-        final TextButton button = new TextButton("Start the game, meow!", skin, "default");
+        final TextButton button = new TextButton(Localization.getString("start_game"), skin, "default");
         
         button.setWidth(300f);
         button.setHeight(50f);
