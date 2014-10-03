@@ -25,13 +25,19 @@ public class SatisfyNeedGoalEvaluator extends GoalEvaluator {
     
     @Override
     public float calculateDesirability() {
+        if(!getBrain().getPerceptions().canSatisfyNeed(need)) {
+            return 0;
+        }
+        
+        float threshold = 0.5f;
+        float n = getBrain().getPerceptions().getNeed(need);
+        float w = getBrain().getWeight(need);
         Activity a = getBrain().getPerceptions().getClosestActivity(need);
         
         if(a != null) {
-            return getBrain().getWeight(need);
+            return (threshold - n) * w;
         }
-        else {
-            return 0;
-        }
+        
+        return 0;
     }
 }

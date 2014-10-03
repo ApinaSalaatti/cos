@@ -15,6 +15,7 @@ import com.dogshitempire.cos.stages.HomeStage;
 public class PerceptionCenter {
     private CatBrain brain;
     
+    // All the cat's need normalized to be in the range of 0 to 1
     public float cleanliness;
     public float happiness;
     public float health;
@@ -32,6 +33,21 @@ public class PerceptionCenter {
        happinessActivities = new Array<Activity>();
        healthActivities = new Array<Activity>();
        hungerActivities = new Array<Activity>();
+    }
+    
+    public float getNeed(int need) {
+        switch(need) {
+            case CatStats.NEED_CLEANLINESS:
+                return cleanliness;
+            case CatStats.NEED_HAPPINESS:
+                return happiness;
+            case CatStats.NEED_HEALTH:
+                return health;
+            case CatStats.NEED_HUNGER:
+                return hunger;
+            default:
+                return 0;
+        }
     }
     
     public boolean canSatisfyNeed(int need) {
@@ -86,10 +102,10 @@ public class PerceptionCenter {
     }
     
     public void update(float deltaSeconds) {
-        cleanliness = brain.getCat().getStats().getCleanliness();
-        happiness = brain.getCat().getStats().getHappiness();
-        health = brain.getCat().getStats().getHealth();
-        hunger = brain.getCat().getStats().getHunger();
+        cleanliness = brain.getCat().getStats().getCleanliness() / CatStats.MAX_NEED_VALUE;
+        happiness = brain.getCat().getStats().getHappiness() / CatStats.MAX_NEED_VALUE;
+        health = brain.getCat().getStats().getHealth() / CatStats.MAX_NEED_VALUE;
+        hunger = brain.getCat().getStats().getHunger() / CatStats.MAX_NEED_VALUE;
         
         scanActivities();
     }

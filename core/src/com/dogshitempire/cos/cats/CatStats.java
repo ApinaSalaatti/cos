@@ -12,6 +12,8 @@ import com.badlogic.gdx.utils.Array;
  * @author Super-Aapo
  */
 public class CatStats {
+    public static final float MAX_NEED_VALUE = 100f;
+    
     public static final int NEED_HEALTH = 1;
     public static final int NEED_HAPPINESS = 2;
     public static final int NEED_CLEANLINESS = 3;
