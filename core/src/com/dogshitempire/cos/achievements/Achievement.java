@@ -12,9 +12,15 @@ public abstract class Achievement {
         return name;
     }
     
-    public Achievement(AchievementManager manager, String name) {
+    private String description;
+    public String getDescription() {
+        return description;
+    }
+    
+    public Achievement(AchievementManager manager, String name, String description) {
         this.manager = manager;
         this.name = name;
+        this.description = description;
     }
     
     public abstract boolean check();

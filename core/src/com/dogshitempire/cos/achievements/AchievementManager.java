@@ -35,7 +35,9 @@ public class AchievementManager {
     }
     
     private void unlock(Achievement a) {
-        
+        achieved.add(a);
+        // TODO: inform player about her cool new achievement
+        // Send achievement data to GameJolt or some server or whatever
     }
     
     public void draw() {
