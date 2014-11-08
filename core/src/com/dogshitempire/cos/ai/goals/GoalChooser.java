@@ -7,6 +7,7 @@ import com.dogshitempire.cos.ai.CatBrain;
 import com.dogshitempire.cos.ai.goals.evaluators.SatisfyNeedGoalEvaluator;
 import com.dogshitempire.cos.ai.goals.evaluators.WanderGoalEvaluator;
 import com.dogshitempire.cos.cats.CatStats;
+import com.dogshitempire.cos.utilities.Debugging;
 
 /**
  *
@@ -29,7 +30,7 @@ public class GoalChooser extends CompositeGoal {
     
     @Override
     public void activate() {
-        if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "Figuring out new goal");
+        Debugging.debugLog("GoalChooser", "Figuring out new goal");
         
         float best = -1;
         GoalEvaluator bestEvaluator = null;
@@ -47,7 +48,7 @@ public class GoalChooser extends CompositeGoal {
         }
         else {
             addSubgoal(bestEvaluator.giveGoal());
-            if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "New goal found:" + getCurrentGoal());
+            Debugging.debugLog("GoalChooser", "New goal found:" + getCurrentGoal());
         }
         
         setStatus(GoalStatus.ACTIVE);
@@ -65,7 +66,7 @@ public class GoalChooser extends CompositeGoal {
         GoalStatus status = processSubgoals(deltaSeconds);
         
         if(status == GoalStatus.COMPLETED || status == GoalStatus.FAILED) {
-            if(GameApplication.debugMode) Gdx.app.log("GoalChooser", "Goal completed");
+            Debugging.debugLog("GoalChooser", "Goal completed");
             setStatus(GoalStatus.INACTIVE);
         }
         

@@ -4,6 +4,10 @@
  */
 package com.dogshitempire.cos.gamejoltapi;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net.HttpMethods;
+import com.badlogic.gdx.Net.HttpRequest;
+import com.dogshitempire.cos.utilities.Debugging;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -12,35 +16,59 @@ import java.security.NoSuchAlgorithmException;
  * @author Merioksa
  */
 public class GameJolt {
-    private int gameID = -1;
-    private String privateKey = "";
+    public enum LoginStatus { NO_LOGIN, WRONG_CREDENTIALS, CONNECTION_ERROR, LOGIN_OK };
+    private LoginStatus loginStatus = LoginStatus.NO_LOGIN;
     
+    // Set these before use. :)
+    private int gameID = 37205;
+    private String privateKey = "ab865be72568c79b229fd9a745d9fc27";
+    
+    // These are set when the user is verified
     private String username;
     private String userToken;
     
-    public GameJolt(int gameID, String privateKey) {
+    public GameJolt() {
         this.gameID = gameID;
         this.privateKey = privateKey;
         username = "";
         userToken = "";
     }
     
-    public boolean verifyUser(String name, String token) {
-        
-        return true;
-    }
-    
     public boolean userVerified() {
-        return username != "" && userToken != "";
+        return !username.equals("") && !userToken.equals("") && loginStatus == LoginStatus.LOGIN_OK;
     }
     
-    public boolean login(String name, String token) {
+    public LoginStatus getLoginStatus() {
+        return loginStatus;
+    }
+    
+    public void login(String name, String token) {
         String url = "http://gamejolt.com/api/game/v1/users/auth/?";
         url += "game_id=" + gameID;
         url += "&username=" + name;
         url += "&user_token=" + token;
         
-        return true;
+        url = getUrlWithSignature(url);
+        HttpRequest request = new HttpRequest(HttpMethods.GET);
+        request.setUrl(url);
+        Gdx.net.sendHttpRequest(request, new UserLoginResponseListener(this));
+        
+        username = name;
+        userToken = token;
+    }
+    
+    public void loginSuccess() {
+        loginStatus = LoginStatus.LOGIN_OK;
+    }
+    public void loginFailed() {
+        loginStatus = LoginStatus.WRONG_CREDENTIALS;
+    }
+    public void loginConnectionFailed() {
+        loginStatus = LoginStatus.CONNECTION_ERROR;
+    }
+    
+    public void logout() {
+        loginStatus = LoginStatus.NO_LOGIN;
     }
     
     public static final int TROPHIES_ACHIEVED = 1;
@@ -62,6 +90,10 @@ public class GameJolt {
         url += "&signature=" + createSignature(url);
         
         return res;
+    }
+    
+    private String getUrlWithSignature(String url) {
+        return url + "&signature=" + createSignature(url);
     }
     
     private String createSignature(String url) {
@@ -89,5 +121,9 @@ public class GameJolt {
         }
         
         return res;
+    }
+    
+    public void update(float deltaSeconds) {
+        
     }
 }

@@ -6,19 +6,25 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.dogshitempire.cos.achievements.AchievementManager;
 import com.dogshitempire.cos.actors.GameActorManager;
 import com.dogshitempire.cos.events.EventManager;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.events.GameEventListener;
+import com.dogshitempire.cos.gamejoltapi.GameJolt;
 import com.dogshitempire.cos.localization.Localization;
 import com.dogshitempire.cos.processes.ProcessManager;
 import com.dogshitempire.cos.stages.GameStage;
 import com.dogshitempire.cos.stages.MainMenuStage;
+import com.dogshitempire.cos.utilities.Debugging;
 
 public class GameApplication extends ApplicationAdapter implements GameEventListener {
-    public static boolean debugMode = true;
-    
     private GameStage currentStage;
+    
+    private static GameOptions options;
+    public static GameOptions getOptions() {
+        return options;
+    }
     
     private static EventManager eventManager;
     public static EventManager getEventManager() {
@@ -39,6 +45,16 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
     public static AssetManager getAssetManager() {
         return assetManager;
     }
+    
+    private static AchievementManager achievements;
+    public static AchievementManager getAchievements() {
+        return achievements;
+    }
+    
+    private static GameJolt gameJolt;
+    public static GameJolt getGameJolt() {
+        return gameJolt;
+    }
 
     @Override
     public void create () {
@@ -51,6 +67,9 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
         processManager = new ProcessManager();
         
         actorManager = new GameActorManager();
+        
+        achievements = new AchievementManager();
+        gameJolt = new GameJolt();
         
         assetManager = new AssetManager();
         assetManager.load("bowl.png", Texture.class);
@@ -81,7 +100,7 @@ public class GameApplication extends ApplicationAdapter implements GameEventList
         // Rendering
         currentStage.draw();
         
-        if(debugMode) {
+        if(Debugging.debugMode) {
             currentStage.debugDraw();
         }
     }

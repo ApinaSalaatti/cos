@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.events.GameEvent;
 import com.dogshitempire.cos.localization.Localization;
+import com.dogshitempire.cos.ui.GameJoltLoginWidget;
 
 /**
  *
@@ -37,5 +38,9 @@ public class MainMenuStage extends GameStage {
         });
         
         addActor(button);
+        
+        GameJoltLoginWidget gjLogin = new GameJoltLoginWidget();
+        gjLogin.setPosition(210, 100);
+        addActor(gjLogin);
     }
 }

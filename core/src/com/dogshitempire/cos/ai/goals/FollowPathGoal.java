@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Array;
 import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.ai.CatBrain;
 import com.dogshitempire.cos.ai.pathfinding.PathEdge;
+import com.dogshitempire.cos.utilities.Debugging;
 
 /**
  *
@@ -24,9 +25,7 @@ public class FollowPathGoal extends CompositeGoal {
         
         PathEdge edge = path.removeIndex(0);
         
-        if(GameApplication.debugMode) {
-            System.out.println("Edges left: " + path.size);
-        }
+        Debugging.debugLog("FollowPathGoal", "Edges left: " + path.size);
         
         switch(edge.getTraverseMethod()) {
             case WALK:
@@ -44,14 +43,14 @@ public class FollowPathGoal extends CompositeGoal {
         
         setStatus(processSubgoals(deltaSeconds));
         if(getStatus() == GoalStatus.COMPLETED && path.size > 0) {
-            if(GameApplication.debugMode) System.out.println("Edge complete, edges left: " + path.size);
+            Debugging.debugLog("Follow Path Goal", "Edge complete, edges left: " + path.size);
             activate();
         }
         else if(getStatus() == GoalStatus.COMPLETED) {
-            if(GameApplication.debugMode) System.out.println("Path complete");
+            Debugging.debugLog("Follow Path Goal", "Path complete");
         }
         else if(getStatus() == GoalStatus.FAILED) {
-            if(GameApplication.debugMode) System.out.println("Path failed");
+            Debugging.debugLog("Follow Path Goal", "Path failed");
         }
         
         return getStatus();

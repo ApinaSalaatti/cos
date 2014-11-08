@@ -3,6 +3,7 @@ package com.dogshitempire.cos.ai.fsm;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.dogshitempire.cos.GameApplication;
+import com.dogshitempire.cos.utilities.Debugging;
 
 /**
  *
@@ -34,7 +35,7 @@ public abstract class FSMState {
         
         debugSkin = GameApplication.getAssetManager().get("uiskin.json", Skin.class);
         
-        if(GameApplication.debugMode) initDebug();
+        if(Debugging.debugMode) initDebug();
     }
     
     protected Skin debugSkin;

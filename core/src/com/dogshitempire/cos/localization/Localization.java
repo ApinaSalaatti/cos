@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.dogshitempire.cos.GameApplication;
 import java.util.HashMap;
 
 /**
@@ -21,6 +20,7 @@ public class Localization {
         FileHandle handle = Gdx.files.local("lang");
         langs = handle.list("json");
         
+        /*
         if(GameApplication.debugMode) {
             System.out.println("Available languages:");
             int index = 0;
@@ -29,6 +29,7 @@ public class Localization {
                 index++;
             }
         }
+        */
     }
     
     public static String[] getAvailableLanguages() {
@@ -42,7 +43,7 @@ public class Localization {
     }
     
     public static void setLanguage(String lang) {
-        if(GameApplication.debugMode) System.out.println("Trying to set language to: " + lang);
+        //if(GameApplication.debugMode) System.out.println("Trying to set language to: " + lang);
         
         for(FileHandle l : langs) {
             if(l.nameWithoutExtension().equals(lang)) {
@@ -55,7 +56,7 @@ public class Localization {
     }
     
     private static void set(FileHandle lang) {
-        if(GameApplication.debugMode) System.out.println("Setting language");
+        //if(GameApplication.debugMode) System.out.println("Setting language");
         
         JsonValue root = new JsonReader().parse(lang);
         JsonValue current = root.child;
@@ -63,14 +64,14 @@ public class Localization {
         strings = new HashMap<String, String>();
         
         while(current != null) {
-            if(GameApplication.debugMode) System.out.println(current.name() + " : " + current.asString());
+            //if(GameApplication.debugMode) System.out.println(current.name() + " : " + current.asString());
             strings.put(current.name(), current.asString());
             current = current.next();
         }
     }
     
     public static String getString(String key, String ... params) {
-        if(GameApplication.debugMode) System.out.println("Fetching string: " + key);
+        //if(GameApplication.debugMode) System.out.println("Fetching string: " + key);
         
         String s = strings.get(key);
         if(s != null) {
