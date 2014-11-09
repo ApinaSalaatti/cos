@@ -1,6 +1,5 @@
 package com.dogshitempire.cos.gamejoltapi;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.Net.HttpResponseListener;
 import com.dogshitempire.cos.utilities.Debugging;

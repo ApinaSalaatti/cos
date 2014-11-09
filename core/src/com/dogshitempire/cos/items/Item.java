@@ -20,6 +20,12 @@ public abstract class Item extends GameActor {
     
     private ItemTile[][] grid;
     
+    private float price;
+    private String itemType;
+    
+    public enum ItemCategory { ACTIVITY, FURNITURE };
+    private ItemCategory itemCategory;
+    
     private Texture tex;
     public void setTexture(Texture tex) {
         this.tex = tex;
@@ -28,9 +34,6 @@ public abstract class Item extends GameActor {
     /**
      * 
      * @param id
-     * @param width width in tiles
-     * @param height height in tiles
-     * @param place 
      */
     public Item(int id) {
         super(id);
@@ -42,7 +45,7 @@ public abstract class Item extends GameActor {
      * @param height height in tiles
      * @param place 
      */
-    public void init(int width, int height, Place place) {
+    public void init(int width, int height, Place place, float price, String type, ItemCategory category) {
         this.widthInTiles = width;
         this.heightInTiles = height;
         
@@ -53,6 +56,10 @@ public abstract class Item extends GameActor {
                 grid[y][x] = new ItemTile();
             }
         }
+        
+        this.price = price;
+        this.itemType = type;
+        this.itemCategory = category;
         
         setBounds(getX(), getY(), width*ItemGrid.TILE_WIDTH-6, height*ItemGrid.TILE_HEIGHT-6);
     }
@@ -76,6 +83,20 @@ public abstract class Item extends GameActor {
     
     public Place getPlace() {
         return place;
+    }
+    
+    public float getPrice() {
+        return price;
+    }
+    public void setPrice(float p) {
+        price = p;
+    }
+    
+    public String getItemType() {
+        return itemType;
+    }
+    public ItemCategory getItemCategory() {
+        return itemCategory;
     }
     
     @Override

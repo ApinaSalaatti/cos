@@ -27,11 +27,7 @@ import com.dogshitempire.cos.GameApplication;
 import com.dogshitempire.cos.items.activities.Activity;
 import com.dogshitempire.cos.items.ItemGrid;
 import com.dogshitempire.cos.items.ItemTile;
-import com.dogshitempire.cos.items.activities.Bowl;
-import com.dogshitempire.cos.items.activities.Toy;
-import com.dogshitempire.cos.cats.Interest;
 import com.dogshitempire.cos.items.Item;
-import com.dogshitempire.cos.items.furniture.Chair;
 import com.dogshitempire.cos.stages.HomeStage;
 
 /**
@@ -72,6 +68,19 @@ public class BuyScreen extends Table {
         s.setKeyboardFocus(this);
         homeStage = (HomeStage)s;
         
+        for(final Item i : homeStage.getShopping().getAvailableItems()) {
+            Button b = new Button(skin);
+            b.addListener(new ChangeListener() {
+                @Override
+                public void changed(ChangeEvent event, Actor target) {
+                    if(homeStage.getLady().getFinances().getCurrentMoney() >= i.getPrice()) {
+                        objectBeingBought = 
+                    }
+                }
+            });
+        }
+        
+        /*
         Button button = new Button(skin);
         button.addListener(new ChangeListener() {
             @Override
@@ -101,6 +110,7 @@ public class BuyScreen extends Table {
         });
         button3.add(new Image(GameApplication.getAssetManager().get("chair.png", Texture.class)));
         add(button3).size(32, 32);
+        */
     }
     
     @Override

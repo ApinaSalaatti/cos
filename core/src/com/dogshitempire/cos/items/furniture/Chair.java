@@ -14,7 +14,7 @@ public class Chair extends Item {
     public Chair(int id) {
         super(id);
         
-        super.init(4, 8, Item.Place.FLOOR);
+        super.init(4, 8, Item.Place.FLOOR, 30, "chair", ItemCategory.FURNITURE);
         
         getTile(0,3).setSolid(ItemTile.TileSide.TOP, true);
         getTile(1,3).setSolid(ItemTile.TileSide.TOP, true);

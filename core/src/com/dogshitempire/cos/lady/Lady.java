@@ -16,6 +16,11 @@ import com.dogshitempire.cos.actors.GameActor;
 public class Lady extends GameActor {
     private Texture tex;
     
+    private Finances finances;
+    public Finances getFinances() {
+        return finances;
+    }
+    
     public Lady(int id) {
         super(id);
         

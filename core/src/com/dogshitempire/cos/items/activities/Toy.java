@@ -7,6 +7,7 @@ import com.dogshitempire.cos.cats.CatStats;
 import com.dogshitempire.cos.cats.Interest;
 import com.dogshitempire.cos.cats.buffs.CatBuff.BuffType;
 import com.dogshitempire.cos.cats.buffs.NeedBuff;
+import com.dogshitempire.cos.items.Item.ItemCategory;
 import com.dogshitempire.cos.items.Item.Place;
 
 /**
@@ -19,9 +20,12 @@ public class Toy extends ActivityModifier {
     private int width;
     private int height;
     private Place place;
+    
+    private float price;
+    
     private Texture tex;
     
-    public Toy(int w, int h, Place place, int maxUsers, Texture tex, Interest ... interestsSatisfied) {
+    public Toy(int w, int h, Place place, int maxUsers, float price, Texture tex, Interest ... interestsSatisfied) {
         super(maxUsers, 10f);
         
         satisfiedInterests = new Array<Interest>();
@@ -30,12 +34,15 @@ public class Toy extends ActivityModifier {
         width = w;
         height = h;
         this.place = place;
+        
+        this.price = price;
+        
         this.tex = tex;
     }
     
     @Override
     public void onAttach(Activity a) {
-        a.init(width, height, place);
+        a.init(width, height, place, price, "toy", ItemCategory.ACTIVITY);
         
         a.setTexture(tex);
         

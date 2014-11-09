@@ -57,13 +57,13 @@ public class GameJolt {
         userToken = token;
     }
     
-    public void loginSuccess() {
+    protected void loginSuccess() {
         loginStatus = LoginStatus.LOGIN_OK;
     }
-    public void loginFailed() {
+    protected void loginFailed() {
         loginStatus = LoginStatus.WRONG_CREDENTIALS;
     }
-    public void loginConnectionFailed() {
+    protected void loginConnectionFailed() {
         loginStatus = LoginStatus.CONNECTION_ERROR;
     }
     

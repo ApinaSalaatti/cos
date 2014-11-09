@@ -33,6 +33,9 @@ public class HomeStage extends GameStage {
     private Skin skin;
     
     private Lady lady;
+    public Lady getLady() {
+        return lady;
+    }
     
     private GameObjectFactory gameObjectFactory;
     public GameObjectFactory getGameObjectFactory() {
@@ -69,7 +72,7 @@ public class HomeStage extends GameStage {
         activities = new Array<Activity>();
         itemGrid = new ItemGrid();
         
-        shoppingManager = new ShoppingManager();
+        shoppingManager = new ShoppingManager(this);
         researchManager = new ResearchManager();
         
         skin = GameApplication.getAssetManager().get("uiskin.json", Skin.class);

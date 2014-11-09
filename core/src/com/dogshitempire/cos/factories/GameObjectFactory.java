@@ -28,7 +28,7 @@ public class GameObjectFactory {
     
     public GameObjectFactory() {
         catNames = new Array<String>();
-        catNames.addAll("Mr. Whiskers", "Blob", "Stripes", "Elizabeth", "Molly", "Gennaro", "Robert", "Spanker", "Flute");
+        catNames.addAll("Whiskers", "Blob", "Stripes", "Elizabeth", "Molly", "Gennaro", "Robert", "Spanker", "Flute");
     }
     
     public Lady createLady() {
@@ -45,6 +45,7 @@ public class GameObjectFactory {
             a.setModifier(new Toy(
                         2, 2,
                         Activity.Place.FLOOR, 1,
+                        10,
                         GameApplication.getAssetManager().get("toy.png", Texture.class),
                         new Interest("Butts")
             ));
@@ -65,7 +66,6 @@ public class GameObjectFactory {
         Cat cat = new Cat(latestID++);
         
         // TODO change these so they are generated based on some kind of HISTORY of the cat ^____^
-        cat.setCatName(generateName());
         cat.setGender((int)(Math.random() * 2) + 1);
         cat.getStats().setCleanliness(50f);
         cat.getStats().setHappiness(50f);
@@ -77,11 +77,32 @@ public class GameObjectFactory {
         
         cat.getStats().addSkill(new Skill("Jumping"));
         
+        cat.setCatName(generateName(cat));
+        
         return cat;
     }
     
-    private String generateName() {
+    /**
+     * A very wild cat name creation algorithm based on all sorts of cool calculations.
+     * @param cat
+     * @return 
+     */
+    private String generateName(Cat cat) {
         int r = (int)(Math.random() * catNames.size);
-        return catNames.get(r);
+        
+        String name = catNames.get(r);
+        double rand = Math.random();
+        if(cat.getGender() == Cat.GENDER_FEMALE) {
+            if(rand > 0.5) {
+                name = "Mrs. " + name;
+            }
+        }
+        else {
+            if(rand > 0.5) {
+                name = "Mr. " + name;
+            }
+        }
+        
+        return name;
     }
 }

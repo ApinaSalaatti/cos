@@ -10,6 +10,7 @@ import com.dogshitempire.cos.cats.Cat;
 import com.dogshitempire.cos.cats.buffs.CatBuff.BuffType;
 import com.dogshitempire.cos.cats.CatStats;
 import com.dogshitempire.cos.cats.buffs.NeedBuff;
+import com.dogshitempire.cos.items.Item.ItemCategory;
 
 /**
  *
@@ -46,7 +47,7 @@ public class Bowl extends ActivityModifier {
     
     @Override
     public void onAttach(Activity a) {
-        a.init(2, 2, Activity.Place.FLOOR);
+        a.init(2, 2, Activity.Place.FLOOR, 5, "bowl", ItemCategory.ACTIVITY);
         
         a.setTexture(emptyTex);
         
